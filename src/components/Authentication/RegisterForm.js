@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputField from "./InputField";
+import InputField from "../InputField";
 
 const RegisterForm = ({ onRegister }) => {
     const [user, setUser] = useState({

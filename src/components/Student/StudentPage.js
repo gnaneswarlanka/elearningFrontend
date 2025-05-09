@@ -1,5 +1,5 @@
 import React from 'react';
-import './StudentPage.css';
+import './StudentPage.css'; // Import the CSS file
 
 // Dummy data for courses (replace with actual data)
 const studentCourses = [

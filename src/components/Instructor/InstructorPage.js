@@ -1,6 +1,6 @@
 // src/components/InstructorPage.js
 import React from 'react';
-import './InstructorPage.css';
+import './InstructorPage.css'; // Import your CSS file for styling
 
 // Dummy data for courses (replace with actual data)
 const instructorCourses = [

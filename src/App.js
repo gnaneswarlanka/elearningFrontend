@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import FeaturedCoursesSection from './components/FeaturedCoursesSection';
-import AboutUsSection from './components/AboutUsSection';
-import AuthPage from './components/AuthPage';
-import StudentPage from './components/StudentPage';
-import InstructorPage from './components/InstructorPage';
+import Header from './components/StaticPage/Header';
+import HeroSection from './components/HomePage/HeroSection';
+import FeaturedCoursesSection from './components/HomePage/FeaturedCoursesSection';
+import AboutUsSection from './components/HomePage/AboutUsSection';
+import AuthPage from './components/Authentication/AuthPage';
+import StudentPage from './components/Student/StudentPage';
+import InstructorPage from './components/Instructor/InstructorPage';
 import './App.css';
-import Footer from './components/Footer';
+import Footer from './components/StaticPage/Footer';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
