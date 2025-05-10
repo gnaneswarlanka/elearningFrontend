@@ -11,6 +11,7 @@ import './App.css';
 import Footer from './components/StaticPage/Footer';
 import CoursesPage from './components/CoursesPage';
 import AddCoursePage from './components/Instructor/AddCoursePage'; // Import the Add Course component
+import AddAssessmentPage from './components/Instructor/AddAssessmentPage'; // Import AddAssessmentPage
 import { UserProvider } from './context/UserContext'; // Corrected import path
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
                     <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <div>Unauthorized</div>} />
                     <Route path="/courses" element={<CoursesPage />} />
                     <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> : <div>Unauthorized</div>} /> {/* Add this route */}
+                    <Route path="/instructor/add-assessment" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddAssessmentPage /> : <div>Unauthorized</div>} /> {/* Add this route */}
                 </Routes>
             </div>
         </UserProvider>

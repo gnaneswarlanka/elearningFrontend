@@ -15,7 +15,7 @@ function Header({ onLogout, showAuthButtons = true }) {
                     <li><Link to="/">Home</Link></li> {/* Use Link for navigation */}
                     <li><Link to="/courses">Courses</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li><Link to="/my-courses">My Courses</Link></li>
+                    <li><Link to="/instructor">My Courses</Link></li> {/* Add My Courses button */}
                 </ul>
                 {showAuthButtons ? (
                     <div>

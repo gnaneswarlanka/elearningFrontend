@@ -4,7 +4,7 @@ import { useUserContext } from '../../context/UserContext'; // Corrected import 
 import axios from 'axios';
 
 const AddCoursePage = () => {
-    const { userId, authToken } = useUserContext(); // Access authToken from context
+    const { userId, authToken, setCourseId } = useUserContext(); // Access setCourseId from context
 
     useEffect(() => {
         console.log('User ID:', userId); // Log userId to the console
@@ -42,6 +42,7 @@ const AddCoursePage = () => {
 
             if (response.status === 200) {
                 setMessage('Course created successfully!');
+                setCourseId(response.data.courseId); // Store courseId in context
                 setFormData({ title: '', description: '', contentURL: '' });
                 setTimeout(() => navigate('/instructor'), 2000); // Redirect to instructor page after success
             } else {

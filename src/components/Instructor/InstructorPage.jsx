@@ -1,37 +1,88 @@
-// src/components/InstructorPage.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './InstructorPage.css'; // Import your CSS file for styling
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../context/UserContext';
+import axios from 'axios';
+import './InstructorPage.css';
 
-// Dummy data for courses (replace with actual data)
-const instructorCourses = [
-    { id: 4, title: 'Create React App', progress: 60, thumbnail: 'https://via.placeholder.com/150' },
-    { id: 5, title: 'Advanced State Management', progress: 90, thumbnail: 'https://via.placeholder.com/150' },
-    { id: 6, title: 'Build APIs with Node', progress: 30, thumbnail: 'https://via.placeholder.com/150' },
-];
+const BASE_URL = 'http://localhost:8082/api/instructors'; // Define the base URL for API requests
 
-const InstructorPage = ({ user }) => {
+const InstructorPage = () => {
+    const navigate = useNavigate();
+    const { userId, authToken, courseId } = useUserContext(); // Retrieve userId and authToken from context
+    const [showCourses, setShowCourses] = useState(false);
+    const [courses, setCourses] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        console.log('User ID:', userId); // Log userId to the console
+        console.log('Auth Token:', authToken); // Log authToken to the console
+
+        if (!userId) {
+            console.error('User ID is not defined. Ensure the context is providing the userId.');
+            return;
+        }
+
+        if (showCourses) {
+            console.log('Fetching courses for user ID:', userId); // Debugging log
+            axios
+                .get(`${BASE_URL}/${userId}/course`, { // Use BASE_URL here
+                    headers: {
+                        Authorization: `Bearer ${authToken}`, // Use token from context
+                    },
+                })
+                .then(response => {
+                    console.log('Courses fetched successfully:', response.data); // Debugging log
+                    setCourses(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching courses:', error); // Debugging log
+                    setError('Failed to load courses. Please try again later.');
+                });
+        }
+    }, [showCourses, userId, authToken]); // Ensure consistent dependency array
+
+    const handleAddCourse = () => {
+        navigate('/instructor/add-course');
+    };
+
+    const handleAddAssessment = () => {
+        if (courseId) {
+            navigate('/instructor/add-assessment');
+        } else {
+            alert('Please create or select a course first.');
+        }
+    };
+
+    const handleMyCoursesClick = () => {
+        setShowCourses(true);
+    };
+
     return (
         <div className="instructor-page">
-            <h1 className="welcome-message">Welcome back, {user.name}!</h1>
-            <h2 className="courses-heading">Your Courses</h2>
-            <div className="courses-grid">
-                {instructorCourses.map(course => (
-                    <div key={course.id} className="course-card">
-                        <img src={course.thumbnail} alt={course.title} className="course-thumbnail" />
-                        <h3 className="course-title">{course.title}</h3>
-                        <p className="course-progress">Progress: {course.progress}%</p>
-                        <button className="view-button">View Course</button>
+            <h1 className="welcome-message">Welcome back!</h1>
+            <button onClick={handleMyCoursesClick} className="my-courses-button">My Courses</button>
+            {showCourses && (
+                <>
+                    <h1>All Courses</h1>
+                    {error && <p className="error-message">{error}</p>}
+                    <div className="courses-grid">
+                        {courses.map((course) => (
+                            <div key={course.id} className="course-card">
+                                <h3>{course.title}</h3>
+                                <p>{course.description}</p>
+                                <p><strong>Instructor:</strong> {course.instructorName}</p>
+                                <a href={course.contentURL} target="_blank" rel="noopener noreferrer">
+                                    View Content
+                                </a>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            {/* Add Instructor-specific content */}
+                </>
+            )}
             <div className="instructor-content">
                 <h2>Instructor Tools</h2>
-                <Link to="/instructor/add-course">
-                    <button className="create-course-button">Create New Course</button>
-                </Link>
-                <button className="manage-students-button">Manage Students</button>
+                <button onClick={handleAddCourse} className="create-course-button">Create New Course</button>
+                <button onClick={handleAddAssessment} className="manage-students-button">Create Assessment</button>
             </div>
         </div>
     );

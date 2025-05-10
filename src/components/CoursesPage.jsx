@@ -29,6 +29,10 @@ const CoursesPage = () => {
                     <div key={course.id} className="course-card">
                         <h3>{course.title}</h3>
                         <p>{course.description}</p>
+                        <p><strong>Instructor:</strong> {course.instructorName}</p>
+                        <a href={course.contentURL} target="_blank" rel="noopener noreferrer">
+                            View Content
+                        </a>
                     </div>
                 ))}
             </div>
