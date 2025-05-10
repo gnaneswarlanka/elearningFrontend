@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios
 import './AuthPage.css'; // Import the CSS file
+import { useUserContext } from '../../context/UserContext'; // Corrected import path
+
+const API_BASE_URL = 'http://localhost:8082/api/auth'; // Update this if the backend runs on a different port
 
 // Reusable Input Component
 const InputField = ({ label, type, name, value, onChange }) => {
@@ -20,11 +24,13 @@ const InputField = ({ label, type, name, value, onChange }) => {
 
 // Login Form Component
 const LoginForm = ({ onLogin }) => {
+    const { setUserId } = useUserContext();
+    const {setAuthToken} =useUserContext();// Access the context
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
-
+// console.log(user);
     function handleUpdate(e) {
         setUser({
             ...user,
@@ -32,31 +38,21 @@ const LoginForm = ({ onLogin }) => {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Pass user object to parent component
-        fetch("http://localhost:8082/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        }).then((response) => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error("Login Failed");
-        }).then((data) => {
-            console.log("Success:", data);
-            // Pass the entire user data, including the role
-            onLogin(data);
-        })
-            .catch((error) => {
-                console.error("Error:", error);
-                alert(error.message);
-            });
+        try {
+            const response = await axios.post(`${API_BASE_URL}/login`, user);
+            console.log("Success:", response.data);
+            setUserId(response.data.userId);
+            setAuthToken(response.data.token); // Store the token in context
+             // Store userId in context
+          //  console.log("User ID:", response.data.userId); // Log userId to the console
 
-
+            onLogin(response.data); // Pass the entire user data, including the role
+        } catch (error) {
+            console.error("Error:", error);
+            alert(error.response?.data?.message || "Login Failed");
+        }
     };
 
     return (
@@ -95,29 +91,16 @@ const RegisterForm = ({ onRegister }) => {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8082/api/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error("Failed to register");
-            })
-            .then((data) => {
-                console.log("Success:", data);
-                onRegister(); // Notify parent of successful registration
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                alert(error.message);
-            });
+        try {
+            const response = await axios.post(`${API_BASE_URL}/register`, user);
+            console.log("Success:", response.data);
+            onRegister(); // Notify parent of successful registration
+        } catch (error) {
+            console.error("Error:", error);
+            alert(error.response?.data?.message || "Failed to register");
+        }
     };
 
     return (
@@ -172,13 +155,10 @@ const AuthPage = ({ showLogin, showRegister, onLoginSuccess, onRegisterSuccess }
                 </div>
             )}
             {showLogin && (
-                
                 <div className="forms-container">
-                    Login {showLogin}
                     <LoginForm onLogin={handleLoginSubmit} />
                     <button className="back-button" onClick={() => { onLoginSuccess(false); }}>Back</button>
                 </div>
-        
             )}
             {showRegister && (
                 <div className="forms-container">

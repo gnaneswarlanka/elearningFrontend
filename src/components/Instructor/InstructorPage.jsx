@@ -1,5 +1,6 @@
 // src/components/InstructorPage.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './InstructorPage.css'; // Import your CSS file for styling
 
 // Dummy data for courses (replace with actual data)
@@ -17,7 +18,7 @@ const InstructorPage = ({ user }) => {
             <div className="courses-grid">
                 {instructorCourses.map(course => (
                     <div key={course.id} className="course-card">
-                         <img src={course.thumbnail} alt={course.title} className="course-thumbnail"/>
+                        <img src={course.thumbnail} alt={course.title} className="course-thumbnail" />
                         <h3 className="course-title">{course.title}</h3>
                         <p className="course-progress">Progress: {course.progress}%</p>
                         <button className="view-button">View Course</button>
@@ -25,6 +26,13 @@ const InstructorPage = ({ user }) => {
                 ))}
             </div>
             {/* Add Instructor-specific content */}
+            <div className="instructor-content">
+                <h2>Instructor Tools</h2>
+                <Link to="/instructor/add-course">
+                    <button className="create-course-button">Create New Course</button>
+                </Link>
+                <button className="manage-students-button">Manage Students</button>
+            </div>
         </div>
     );
 };

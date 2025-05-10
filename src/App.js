@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/StaticPage/Header';
 import HeroSection from './components/HomePage/HeroSection';
@@ -9,12 +9,14 @@ import StudentPage from './components/Student/StudentPage';
 import InstructorPage from './components/Instructor/InstructorPage';
 import './App.css';
 import Footer from './components/StaticPage/Footer';
+import CoursesPage from './components/CoursesPage';
+import AddCoursePage from './components/Instructor/AddCoursePage'; // Import the Add Course component
+import { UserProvider } from './context/UserContext'; // Corrected import path
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const [routeRendered, setRouteRendered] = useState(false);
 
     const handleLogin = (userData) => {
         setIsLoggedIn(true);
@@ -31,40 +33,40 @@ function App() {
         setUser(null);
         navigate('/');
     };
-    useEffect(() => {
-        console.log("App - Route Rendered:", routeRendered);
-    }, [routeRendered]);
 
-    
     return (
-        <div className="app">
-            <Header onLogout={handleLogout} showAuthButtons={!isLoggedIn} />
-            <Routes>
-                <Route path="/" element={!isLoggedIn ? (
-                    <>
-                        <HeroSection />
-                        <FeaturedCoursesSection />
-                        <AboutUsSection />
-                        <Footer/>
-                    </>
-                ) : (
-                    <></>
-                )} />
-                <Route path="/login" element={<AuthPage showLogin={true} showRegister={false} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
-                <Route path="/register" element={<AuthPage showLogin={false} showRegister={true} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
-                <Route path="/student" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentPage user={user} /> : <div>Unauthorized</div>} />
-                <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <div>Unauthorized</div>} />
-            </Routes>
-        </div>
+        <UserProvider> {/* Wrap the app with UserProvider */}
+            <div className="app">
+                <Header onLogout={handleLogout} showAuthButtons={!isLoggedIn} />
+                <Routes>
+                    <Route path="/" element={!isLoggedIn ? (
+                        <>
+                            <HeroSection />
+                            <FeaturedCoursesSection />
+                            <AboutUsSection />
+                            <Footer />
+                        </>
+                    ) : (
+                        <></>
+                    )} />
+                    <Route path="/login" element={<AuthPage showLogin={true} showRegister={false} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
+                    <Route path="/register" element={<AuthPage showLogin={false} showRegister={true} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
+                    <Route path="/student" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentPage user={user} /> : <div>Unauthorized</div>} />
+                    <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <div>Unauthorized</div>} />
+                    <Route path="/courses" element={<CoursesPage />} />
+                    <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> : <div>Unauthorized</div>} /> {/* Add this route */}
+                </Routes>
+            </div>
+        </UserProvider>
     );
 }
 
 function RootApp() {
     return (
-      <Router>
-        <App />
-      </Router>
-    )
+        <Router>
+            <App />
+        </Router>
+    );
 }
 
 export default RootApp;
