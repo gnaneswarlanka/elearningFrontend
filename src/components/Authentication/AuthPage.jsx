@@ -24,6 +24,8 @@ const InputField = ({ label, type, name, value, onChange }) => {
 
 // Login Form Component
 const LoginForm = ({ onLogin }) => {
+    const { setUserRole } = useUserContext(); // Access the context
+    const { setUserName } = useUserContext(); // Access the context
     const { setUserId } = useUserContext();
     const {setAuthToken} =useUserContext();// Access the context
     const [user, setUser] = useState({
@@ -43,6 +45,8 @@ const LoginForm = ({ onLogin }) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/login`, user);
             console.log("Success:", response.data);
+            setUserRole(response.data.role); // 
+            setUserName(response.data.name); 
             setUserId(response.data.userId);
             setAuthToken(response.data.token); // Store the token in context
              // Store userId in context

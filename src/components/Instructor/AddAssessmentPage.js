@@ -7,12 +7,7 @@ const AddAssessmentPage = () => {
     const { userId, authToken, courseId } = useUserContext(); // Access courseId from context
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log('User ID:', userId);
-        console.log('Auth Token:', authToken);
-        console.log('Course ID:', courseId); // Log courseId to the console
-    }, [userId, authToken, courseId]);
-
+    // Move useState hooks to the top of the component
     const [formData, setFormData] = useState({
         type: '',
         maxScore: '',
@@ -20,6 +15,17 @@ const AddAssessmentPage = () => {
     const [message, setMessage] = useState('');
 
     const BASE_URL = 'http://localhost:8082/api/instructors';
+
+    useEffect(() => {
+        console.log('User ID:', userId);
+        console.log('Auth Token:', authToken);
+        console.log('Course ID from context after navigation:', courseId); // Debugging log
+    }, [userId, authToken, courseId]);
+
+    // Handle the case where courseId is undefined
+    if (!courseId) {
+        return <p>Error: Course ID is not available. Please navigate from the course page.</p>;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -47,7 +53,7 @@ const AddAssessmentPage = () => {
             if (response.status === 200) {
                 setMessage('Assessment created successfully!');
                 setFormData({ type: '', maxScore: '' });
-                setTimeout(() => navigate(`/courses/${courseId}`), 2000);
+                setTimeout(() => navigate(`/instructor`), 2000);
             } else {
                 setMessage('Failed to create assessment. Please try again.');
             }
@@ -57,32 +63,34 @@ const AddAssessmentPage = () => {
     };
 
     return (
-        <div>
-            <h2>Add Assessment</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Type:</label>
+        <div className="container mt-5">
+            <h2 className="text-center mb-4">Add Assessment</h2>
+            <form onSubmit={handleSubmit} className="card p-4 shadow">
+                <div className="mb-3">
+                    <label className="form-label">Type:</label>
                     <input
                         type="text"
                         name="type"
                         value={formData.type}
                         onChange={handleChange}
                         required
+                        className="form-control"
                     />
                 </div>
-                <div>
-                    <label>Max Score:</label>
+                <div className="mb-3">
+                    <label className="form-label">Max Score:</label>
                     <input
                         type="number"
                         name="maxScore"
                         value={formData.maxScore}
                         onChange={handleChange}
                         required
+                        className="form-control"
                     />
                 </div>
-                <button type="submit">Add Assessment</button>
+                <button type="submit" className="btn btn-primary w-100">Add Assessment</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="mt-3 text-center">{message}</p>}
         </div>
     );
 };

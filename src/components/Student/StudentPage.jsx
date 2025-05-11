@@ -1,29 +1,44 @@
-import React from 'react';
-import './StudentPage.css'; // Import the CSS file
+import React, { useEffect, useState} from 'react';
+import { getEnrolledCourses } from '../../services/enrollmentService';
+import {useUserContext } from '../../context/UserContext'; // Import UserContext
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
-// Dummy data for courses (replace with actual data)
-const studentCourses = [
-    { id: 1, title: 'Introduction to React', progress: 50, thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg' }, // React Logo
-    { id: 2, title: 'Advanced JavaScript', progress: 80, thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.svg' }, // JavaScript Logo
-    { id: 3, title: 'Data Structures', progress: 20, thumbnail: 'https://www.geeksforgeeks.org/wp-content/uploads/20220803161342-data-structures.png' }, // Data Structures
-];
+const StudentPage = () => {
+    const [enrolledCourses, setEnrolledCourses] = useState([]);
+    const [error, setError] = useState(null);
+    const { userId, authToken } = useUserContext(); // Get userId and authToken from context
 
-const StudentPage = ({ user }) => {
+    useEffect(() => {
+        const fetchEnrolledCourses = async () => {
+            try {
+                const data = await getEnrolledCourses(userId, authToken); // Pass userId and authToken
+                setEnrolledCourses(data);
+            } catch (err) {
+                console.error('Error fetching enrolled courses:', err);
+                setError('Failed to fetch enrolled courses. Please try again later.');
+            }
+        };
+
+        fetchEnrolledCourses();
+    }, [userId, authToken]);
+
     return (
-        <div className="student-page">
-            <h1 className="welcome-message">Welcome back, {user.name}!</h1>
-            <h2 className="courses-heading">Enrolled Courses</h2>
-            <div className="courses-grid">
-                {studentCourses.map(course => (
-                    <div key={course.id} className="course-card">
-                        <img src={course.thumbnail} alt={course.title} className="course-thumbnail" />
-                        <h3 className="course-title">{course.title}</h3>
-                        <p className="course-progress">Progress: {course.progress}%</p>
-                        <button className="resume-button">Resume Course</button>
+        <div className="container mt-4">
+            <h1 className="text-center mb-4">My Enrolled Courses</h1>
+            {error && <p className="alert alert-danger">{error}</p>}
+            <div className="row">
+                {enrolledCourses.map((course) => (
+                    <div key={course.id} className="col-md-4 mb-4">
+                        <div className="card h-100 shadow-sm">
+                            <div className="card-body d-flex flex-column">
+                                <h5 className="card-title text-primary">{course.title}</h5>
+                                <p className="card-text text-muted">{course.description}</p>
+                                <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
-            {/* Add Upcoming Deadlines or Announcements  */}
         </div>
     );
 };

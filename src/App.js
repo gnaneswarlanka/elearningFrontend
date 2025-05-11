@@ -13,6 +13,9 @@ import CoursesPage from './components/CoursesPage';
 import AddCoursePage from './components/Instructor/AddCoursePage'; // Import the Add Course component
 import AddAssessmentPage from './components/Instructor/AddAssessmentPage'; // Import AddAssessmentPage
 import { UserProvider } from './context/UserContext'; // Corrected import path
+import UpdateCoursePage from './components/Instructor/UpdateCoursePage'; // Import UpdateCoursePage
+import ProfilePage from './components/Instructor/ProfilePage'; // Import ProfilePage
+import StudentProfile from './components/Student/StudentProfile';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,6 +60,9 @@ function App() {
                     <Route path="/courses" element={<CoursesPage />} />
                     <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> : <div>Unauthorized</div>} /> {/* Add this route */}
                     <Route path="/instructor/add-assessment" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddAssessmentPage /> : <div>Unauthorized</div>} /> {/* Add this route */}
+                    <Route path="/instructor/updateCourse" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <UpdateCoursePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
+                    <Route path="/instructor/profile" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <ProfilePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
+                    <Route path="/student/profile" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentProfile /> : <div>Unauthorized</div>} />
                 </Routes>
             </div>
         </UserProvider>

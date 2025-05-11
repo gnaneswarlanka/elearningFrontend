@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client'; // Use createRoot from ReactDOM
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { UserProvider } from './context/UserContext.jsx'; // Corrected import path
+import { UserProvider } from './context/UserContext.jsx'; // Use the existing UserContext.jsx
 
 const root = ReactDOM.createRoot(document.getElementById('root')); // Create a root
 root.render(
     <React.StrictMode>
-        <UserProvider>
+        <UserProvider> {/* Wrap the entire app with UserProvider */}
             <App />
         </UserProvider>
     </React.StrictMode>

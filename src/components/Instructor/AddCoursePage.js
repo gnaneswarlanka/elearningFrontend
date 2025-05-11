@@ -4,7 +4,7 @@ import { useUserContext } from '../../context/UserContext'; // Corrected import 
 import axios from 'axios';
 
 const AddCoursePage = () => {
-    const { userId, authToken, setCourseId } = useUserContext(); // Access setCourseId from context
+    const { userId, authToken} = useUserContext(); // Access setCourseId from context
 
     useEffect(() => {
         console.log('User ID:', userId); // Log userId to the console
@@ -42,7 +42,6 @@ const AddCoursePage = () => {
 
             if (response.status === 200) {
                 setMessage('Course created successfully!');
-                setCourseId(response.data.courseId); // Store courseId in context
                 setFormData({ title: '', description: '', contentURL: '' });
                 setTimeout(() => navigate('/instructor'), 2000); // Redirect to instructor page after success
             } else {
@@ -54,41 +53,44 @@ const AddCoursePage = () => {
     };
 
     return (
-        <div>
-            <h2>Add Course</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
+        <div className="container mt-5">
+            <h2 className="text-center mb-4">Add Course</h2>
+            <form onSubmit={handleSubmit} className="card p-4 shadow">
+                <div className="mb-3">
+                    <label className="form-label">Title:</label>
                     <input
                         type="text"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
                         required
+                        className="form-control"
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className="mb-3">
+                    <label className="form-label">Description:</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         required
+                        className="form-control"
                     />
                 </div>
-                <div>
-                    <label>Content URL:</label>
+                <div className="mb-3">
+                    <label className="form-label">Content URL:</label>
                     <input
                         type="url"
                         name="contentURL"
                         value={formData.contentURL}
                         onChange={handleChange}
                         required
+                        className="form-control"
                     />
                 </div>
-                <button type="submit">Add Course</button>
+                <button type="submit" className="btn btn-primary w-100">Add Course</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="mt-3 text-center">{message}</p>}
         </div>
     );
 };
