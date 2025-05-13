@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/StaticPage/Header';
 import HeroSection from './components/HomePage/HeroSection';
@@ -16,6 +17,7 @@ import { UserProvider } from './context/UserContext'; // Corrected import path
 import UpdateCoursePage from './components/Instructor/UpdateCoursePage'; // Import UpdateCoursePage
 import ProfilePage from './components/Instructor/ProfilePage'; // Import ProfilePage
 import StudentProfile from './components/Student/StudentProfile';
+import AssessmentList from './components/Student/AssessmentList'; // Import AssessmentList
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,20 +57,29 @@ function App() {
                     )} />
                     <Route path="/login" element={<AuthPage showLogin={true} showRegister={false} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
                     <Route path="/register" element={<AuthPage showLogin={false} showRegister={true} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
-                    <Route path="/student" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentPage user={user} /> : <div>Unauthorized</div>} />
-                    <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <div>Unauthorized</div>} />
+                    <Route path="/student" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentPage user={user} /> : <Navigate to="/login"/>} />
+                    <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <Navigate to="/login"/>} />
                     <Route path="/courses" element={<CoursesPage />} />
-                    <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/add-assessment" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddAssessmentPage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/updateCourse" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <UpdateCoursePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/profile" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <ProfilePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/student/profile" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentProfile /> : <div>Unauthorized</div>} />
+                    <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> :<Navigate to="/login"/>} /> {/* Add this route */}
+                    <Route path="/instructor/add-assessment" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddAssessmentPage /> : <Navigate to="/login"/>} /> {/* Add this route */}
+                    <Route path="/instructor/updateCourse" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <UpdateCoursePage /> : <Navigate to="/login"/>} /> {/* Add this route */}
+                    <Route path="/instructor/profile" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <ProfilePage /> : <Navigate to="/login"/>} /> {/* Add this route */}
+                    <Route path="/student/profile" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentProfile /> : <Navigate to="/login"/>} />
+                    <Route path="/student/course/assessments" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <AssessmentList/>: <Navigate to="/login"/>} /> 
+                    <Route path="/*" element={<PageNotFound/>} />
                 </Routes>
             </div>
         </UserProvider>
     );
 }
 
+function PageNotFound(){
+    return (
+        <div>
+            <h1>Page Not Found</h1>
+        </div>
+    );
+}
 function RootApp() {
     return (
         <Router>

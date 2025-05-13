@@ -1,13 +1,16 @@
 import React, { useEffect, useState} from 'react';
 import { getEnrolledCourses } from '../../services/enrollmentService';
+import { useNavigate } from 'react-router-dom';
 import {useUserContext } from '../../context/UserContext'; // Import UserContext
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 const StudentPage = () => {
     const [enrolledCourses, setEnrolledCourses] = useState([]);
     const [error, setError] = useState(null);
-    const { userId, authToken } = useUserContext(); // Get userId and authToken from context
-
+    const { userId, authToken } = useUserContext(); 
+    const {setCourseId}=useUserContext();
+    // Get userId and authToken from context
+let navigate=useNavigate();
     useEffect(() => {
         const fetchEnrolledCourses = async () => {
             try {
@@ -34,7 +37,11 @@ const StudentPage = () => {
                                 <h5 className="card-title text-primary">{course.title}</h5>
                                 <p className="card-text text-muted">{course.description}</p>
                                 <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
+
+                                <button onClick={()=>{  setCourseId(course.courseId)
+                                    navigate("/student/course/assessments")}}>assessmnet</button>
                             </div>
+
                         </div>
                     </div>
                 ))}

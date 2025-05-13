@@ -51,41 +51,44 @@ const UpdateCoursePage = () => {
     };
 
     return (
-        <div>
-            <h2>Update Course</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
+        <div className="container mt-5">
+            <h2 className="text-center mb-4">Update Course</h2>
+            <form onSubmit={handleSubmit} className="card p-4 shadow">
+                <div className="mb-3">
+                    <label className="form-label">Title:</label>
                     <input
                         type="text"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
+                        className="form-control"
                         required
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className="mb-3">
+                    <label className="form-label">Description:</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
+                        className="form-control"
                         required
                     />
                 </div>
-                <div>
-                    <label>Content URL:</label> {/* Added contentURL field */}
+                <div className="mb-3">
+                    <label className="form-label">Content URL:</label>
                     <input
                         type="url"
                         name="contentURL"
                         value={formData.contentURL}
                         onChange={handleChange}
+                        className="form-control"
                         required
                     />
                 </div>
-                <button type="submit">Update Course</button>
+                <button type="submit" className="btn btn-primary w-100">Update Course</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="mt-3 text-center text-danger">{message}</p>}
         </div>
     );
 };

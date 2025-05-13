@@ -9,7 +9,7 @@ const AddAssessmentPage = () => {
 
     // Move useState hooks to the top of the component
     const [formData, setFormData] = useState({
-        type: '',
+        question: '',
         maxScore: '',
     });
     const [message, setMessage] = useState('');
@@ -33,6 +33,7 @@ const AddAssessmentPage = () => {
     };
 
     const handleSubmit = async (e) => {
+        console.log('Form Data:', formData); // Debugging log
         e.preventDefault();
         if (!userId || !authToken || !courseId) {
             setMessage('User ID, course ID, or authentication token is missing. Please log in again.');
@@ -49,7 +50,7 @@ const AddAssessmentPage = () => {
                     },
                 }
             );
-
+            console.log('Response:', response);
             if (response.status === 200) {
                 setMessage('Assessment created successfully!');
                 setFormData({ type: '', maxScore: '' });
@@ -67,11 +68,11 @@ const AddAssessmentPage = () => {
             <h2 className="text-center mb-4">Add Assessment</h2>
             <form onSubmit={handleSubmit} className="card p-4 shadow">
                 <div className="mb-3">
-                    <label className="form-label">Type:</label>
+                    <label className="form-label">Question:</label>
                     <input
                         type="text"
-                        name="type"
-                        value={formData.type}
+                        name="question"
+                        value={formData.question}
                         onChange={handleChange}
                         required
                         className="form-control"

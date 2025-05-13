@@ -49,7 +49,7 @@ const LoginForm = ({ onLogin }) => {
             setUserName(response.data.name); 
             setUserId(response.data.userId);
             setAuthToken(response.data.token); // Store the token in context
-             // Store userId in context
+           //localStorage.setItem("authToken", response.data.token); 
           //  console.log("User ID:", response.data.userId); // Log userId to the console
 
             onLogin(response.data); // Pass the entire user data, including the role
@@ -152,22 +152,14 @@ const AuthPage = ({ showLogin, showRegister, onLoginSuccess, onRegisterSuccess }
 
     return (
         <div className="auth-page">
-            {!showLogin && !showRegister && (
-                <div className="auth-buttons">
-                    <button className="auth-button" onClick={() => { onLoginSuccess(false); }}>Login</button>
-                    <button className="auth-button" onClick={() => { onRegisterSuccess(false); }}>Register</button>
-                </div>
-            )}
             {showLogin && (
                 <div className="forms-container">
                     <LoginForm onLogin={handleLoginSubmit} />
-                    <button className="back-button" onClick={() => { onLoginSuccess(false); }}>Back</button>
                 </div>
             )}
             {showRegister && (
                 <div className="forms-container">
                     <RegisterForm onRegister={handleRegisterSubmit} />
-                    <button className="back-button" onClick={() => { onRegisterSuccess(false); }}>Back</button>
                 </div>
             )}
         </div>

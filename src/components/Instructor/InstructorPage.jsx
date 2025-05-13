@@ -64,13 +64,9 @@ const InstructorPage = () => {
         navigate('/instructor/add-course');
     };
 
-    const handleMyCoursesClick = () => {
+ const handleMyCoursesClick = () => {
         setShowCourses(true);
-    };
-
-    // const handleUpdate = (courseId) => {
-    //     navigate(`/instructor/updateCourse/${courseId}`);
-    // };
+    }; 
 
     return (
         <div className="instructor-page container mt-5">
