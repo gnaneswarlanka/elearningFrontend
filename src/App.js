@@ -21,7 +21,9 @@ import StudentProfile from './components/Student/StudentProfile';
 import AssessmentList from './components/Student/AssessmentList'; // Import AssessmentList
 
 import InstructorQuestionnaire from './components/Instructor/InstructorQuestionnaire';
-
+import ViewAssessments from './components/Instructor/ViewAssessments';
+import ViewSubmissions from './components/Instructor/ViewSubmissions';
+import Evaluate from './components/Instructor/Evaluate';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -163,6 +165,9 @@ function App() {
                         path="/instructor/questionnaire"
                         element={<InstructorQuestionnaire />}
                     />
+                    <Route path="/instructor/view-assessments" element={<ViewAssessments />} />
+                    <Route path="/instructor/view-submissions/:assessmentId" element={<ViewSubmissions />} />
+                    <Route path="/evaluate/:submissionId" element={<Evaluate />} />
                 </Routes>
             </div>
         </UserProvider>

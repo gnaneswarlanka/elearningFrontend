@@ -112,6 +112,15 @@ const InstructorPage = () => {
                                             >
                                                 Delete
                                             </button>
+                                            <button 
+                                                onClick={() => {
+                                                    setCourseId(course.courseId);
+                                                    navigate(`/instructor/view-assessments`);
+                                                }} 
+                                                className="btn btn-info btn-sm"
+                                            >
+                                                View Assessments
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
