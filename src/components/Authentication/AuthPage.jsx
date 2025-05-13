@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import axios
 import './AuthPage.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useUserContext } from '../../context/UserContext'; // Corrected import path
 
 const API_BASE_URL = 'http://localhost:8082/api/auth'; // Update this if the backend runs on a different port
@@ -27,7 +28,7 @@ const LoginForm = ({ onLogin }) => {
     const { setUserRole } = useUserContext(); // Access the context
     const { setUserName } = useUserContext(); // Access the context
     const { setUserId } = useUserContext();
-    const {setAuthToken} =useUserContext();// Access the context
+    const { setAuthToken } = useUserContext(); // Access the context
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -45,14 +46,11 @@ const LoginForm = ({ onLogin }) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/login`, user);
             console.log("Success:", response.data);
-            setUserRole(response.data.role); // 
-            setUserName(response.data.name); 
+            setUserRole(response.data.role);
+            setUserName(response.data.name);
             setUserId(response.data.userId);
-            setAuthToken(response.data.token); // Store the token in context
-             // Store userId in context
-          //  console.log("User ID:", response.data.userId); // Log userId to the console
-
-            onLogin(response.data); // Pass the entire user data, including the role
+            setAuthToken(response.data.token); // Ensure authToken is set
+            onLogin(response.data);
         } catch (error) {
             console.error("Error:", error);
             alert(error.response?.data?.message || "Login Failed");
@@ -88,6 +86,8 @@ const RegisterForm = ({ onRegister }) => {
         role: ""
     });
 
+    const navigate = useNavigate();
+
     function handleUpdate(e) {
         setUser({
             ...user,
@@ -100,7 +100,11 @@ const RegisterForm = ({ onRegister }) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/register`, user);
             console.log("Success:", response.data);
-            onRegister(); // Notify parent of successful registration
+            if (user.role === "ROLE_INSTRUCTOR") {
+                navigate("/instructor/questionnaire"); // Redirect to questionnaire for instructors
+            } else {
+                onRegister(); // Notify parent of successful registration
+            }
         } catch (error) {
             console.error("Error:", error);
             alert(error.response?.data?.message || "Failed to register");
@@ -152,22 +156,14 @@ const AuthPage = ({ showLogin, showRegister, onLoginSuccess, onRegisterSuccess }
 
     return (
         <div className="auth-page">
-            {!showLogin && !showRegister && (
-                <div className="auth-buttons">
-                    <button className="auth-button" onClick={() => { onLoginSuccess(false); }}>Login</button>
-                    <button className="auth-button" onClick={() => { onRegisterSuccess(false); }}>Register</button>
-                </div>
-            )}
             {showLogin && (
                 <div className="forms-container">
                     <LoginForm onLogin={handleLoginSubmit} />
-                    <button className="back-button" onClick={() => { onLoginSuccess(false); }}>Back</button>
                 </div>
             )}
             {showRegister && (
                 <div className="forms-container">
                     <RegisterForm onRegister={handleRegisterSubmit} />
-                    <button className="back-button" onClick={() => { onRegisterSuccess(false); }}>Back</button>
                 </div>
             )}
         </div>

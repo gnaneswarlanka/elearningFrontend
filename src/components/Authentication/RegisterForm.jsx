@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../InputField";
 
 const RegisterForm = ({ onRegister }) => {
     const [user, setUser] = useState({
-        username: "",
+        name: "",
         email: "",
         password: "",
         role: ""
     });
 
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     function handleUpdate(e) {
         setUser({
@@ -36,8 +38,12 @@ const RegisterForm = ({ onRegister }) => {
             })
             .then((data) => {
                 console.log("Success:", data);
-                if (onRegister) {
-                    onRegister(data); // Invoke callback with response data
+                if (user.role === "ROLE_INSTRUCTOR") {
+                    navigate("/instructor/questionnaire"); // Redirect to questionnaire for instructors
+                } else {
+                    if (onRegister) {
+                        onRegister(data); // Invoke callback with response data
+                    }
                 }
             })
             .catch((error) => {
@@ -53,7 +59,7 @@ const RegisterForm = ({ onRegister }) => {
             <InputField
                 label="Username"
                 type="text"
-                name="username"
+                name="name"
                 onChange={handleUpdate}
             />
             <InputField

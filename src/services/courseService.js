@@ -1,13 +1,20 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8082/api/courses'; // Ensure this matches your backend URL
+// Update the BASE_URL if the endpoint is different
+const BASE_URL = 'http://localhost:8082/api/courses/'; // Example: Updated endpoint
 
-export const getAllCourses = async () => {
+export const getAllCourses = async (authToken) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/`); // Calls the backend endpoint
-        return response.data; // Returns the list of courses
+        console.log('Making API request to:', BASE_URL); // Debugging log
+        const response = await axios.get(BASE_URL, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        });
+        console.log('API Response:', response.data); // Debugging log
+        return response.data;
     } catch (error) {
-        console.error('Error fetching courses:', error);
-        throw error;
+        console.error('API Error:', error.response?.data || error.message || error); // Log detailed error
+        throw error; // Re-throw the error to be handled by the caller
     }
 };

@@ -10,12 +10,13 @@ import InstructorPage from './components/Instructor/InstructorPage';
 import './App.css';
 import Footer from './components/StaticPage/Footer';
 import CoursesPage from './components/CoursesPage';
-import AddCoursePage from './components/Instructor/AddCoursePage'; // Import the Add Course component
-import AddAssessmentPage from './components/Instructor/AddAssessmentPage'; // Import AddAssessmentPage
-import { UserProvider } from './context/UserContext'; // Corrected import path
-import UpdateCoursePage from './components/Instructor/UpdateCoursePage'; // Import UpdateCoursePage
-import ProfilePage from './components/Instructor/ProfilePage'; // Import ProfilePage
+import AddCoursePage from './components/Instructor/AddCoursePage';
+import AddAssessmentPage from './components/Instructor/AddAssessmentPage';
+import { UserProvider } from './context/UserContext';
+import UpdateCoursePage from './components/Instructor/UpdateCoursePage';
+import ProfilePage from './components/Instructor/ProfilePage';
 import StudentProfile from './components/Student/StudentProfile';
+import InstructorQuestionnaire from './components/Instructor/InstructorQuestionnaire';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,7 @@ function App() {
     const navigate = useNavigate();
 
     const handleLogin = (userData) => {
+        console.log('User logged in:', userData); // Debugging log
         setIsLoggedIn(true);
         setUser(userData);
         navigate(userData.role === 'ROLE_STUDENT' ? '/student' : '/instructor');
@@ -33,36 +35,125 @@ function App() {
     };
 
     const handleLogout = () => {
+        console.log('User logged out'); // Debugging log
         setIsLoggedIn(false);
         setUser(null);
         navigate('/');
     };
 
     return (
-        <UserProvider> {/* Wrap the app with UserProvider */}
+        <UserProvider>
             <div className="app">
                 <Header onLogout={handleLogout} showAuthButtons={!isLoggedIn} />
                 <Routes>
-                    <Route path="/" element={!isLoggedIn ? (
-                        <>
-                            <HeroSection />
-                            <FeaturedCoursesSection />
-                            <AboutUsSection />
-                            <Footer />
-                        </>
-                    ) : (
-                        <></>
-                    )} />
-                    <Route path="/login" element={<AuthPage showLogin={true} showRegister={false} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
-                    <Route path="/register" element={<AuthPage showLogin={false} showRegister={true} onLoginSuccess={handleLogin} onRegisterSuccess={handleRegister} />} />
-                    <Route path="/student" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentPage user={user} /> : <div>Unauthorized</div>} />
-                    <Route path="/instructor" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <InstructorPage user={user} /> : <div>Unauthorized</div>} />
+                    <Route
+                        path="/"
+                        element={
+                            <>
+                                <HeroSection />
+                                <FeaturedCoursesSection />
+                                <AboutUsSection />
+                                <Footer />
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            <AuthPage
+                                showLogin={true}
+                                showRegister={false}
+                                onLoginSuccess={handleLogin}
+                                onRegisterSuccess={handleRegister}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <AuthPage
+                                showLogin={false}
+                                showRegister={true}
+                                onLoginSuccess={handleLogin}
+                                onRegisterSuccess={handleRegister}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/student"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_STUDENT' ? (
+                                <StudentPage user={user} />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/instructor"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
+                                <InstructorPage user={user} />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
                     <Route path="/courses" element={<CoursesPage />} />
-                    <Route path="/instructor/add-course" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddCoursePage user={user} /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/add-assessment" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <AddAssessmentPage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/updateCourse" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <UpdateCoursePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/instructor/profile" element={isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? <ProfilePage /> : <div>Unauthorized</div>} /> {/* Add this route */}
-                    <Route path="/student/profile" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <StudentProfile /> : <div>Unauthorized</div>} />
+                    <Route
+                        path="/instructor/add-course"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
+                                <AddCoursePage user={user} />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/instructor/add-assessment"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
+                                <AddAssessmentPage />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/instructor/updateCourse"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
+                                <UpdateCoursePage />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/instructor/profile"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
+                                <ProfilePage />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/student/profile"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_STUDENT' ? (
+                                <StudentProfile />
+                            ) : (
+                                <div>Unauthorized</div>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/instructor/questionnaire"
+                        element={<InstructorQuestionnaire />}
+                    />
                 </Routes>
             </div>
         </UserProvider>
