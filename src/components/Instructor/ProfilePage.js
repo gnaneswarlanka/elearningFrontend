@@ -32,24 +32,54 @@ const ProfilePage = () => {
     }, [userId, authToken]);
 
     if (error) {
-        return <div className="alert alert-danger">{error}</div>;
+        return (
+            <div className="container mt-5">
+                <div className="alert alert-danger text-center" role="alert">
+                    {error}
+                </div>
+            </div>
+        );
     }
 
     if (!profileData) {
-        return <div className="text-center mt-5"><div className="spinner-border" role="status"></div><p>Loading...</p></div>;
+        return (
+            <div className="container mt-5 text-center">
+                <div className="spinner-border text-primary" role="status"></div>
+                <p className="mt-3">Loading...</p>
+            </div>
+        );
     }
 
     return (
         <div className="container mt-5">
-            <div className="card">
-                <div className="card-header bg-primary text-white">
-                    <h2>My Profile</h2>
-                </div>
-                <div className="card-body">
-                    <p><strong>Name:</strong> {profileData.name}</p>
-                    <p><strong>Email:</strong> {profileData.email}</p>
-                    <p><strong>Role:</strong> {profileData.role}</p>
-                    <p><strong>Salary:</strong> {profileData.salary}</p>
+            <div className="row justify-content-center">
+                <div className="col-lg-6 col-md-8">
+                    <div className="card shadow-lg border-0">
+                        <div className="card-header bg-primary text-white text-center py-4">
+                            <h2 className="mb-0">My Profile</h2>
+                        </div>
+                        <div className="card-body p-4">
+                            <div className="mb-3">
+                                <h5 className="text-dark">Name</h5>
+                                <p className="text-muted bg-light p-2 rounded">{profileData.name}</p>
+                            </div>
+                            <div className="mb-3">
+                                <h5 className="text-dark">Email</h5>
+                                <p className="text-muted bg-light p-2 rounded">{profileData.email}</p>
+                            </div>
+                            <div className="mb-3">
+                                <h5 className="text-dark">Role</h5>
+                                <p className="text-muted bg-light p-2 rounded">{profileData.role}</p>
+                            </div>
+                            <div className="mb-3">
+                                <h5 className="text-dark">Salary</h5>
+                                <p className="text-muted bg-light p-2 rounded">{profileData.salary}</p>
+                            </div>
+                        </div>
+                        <div className="card-footer text-center bg-primary text-white">
+                            <p className="mb-0">Thank you for being a valued instructor!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

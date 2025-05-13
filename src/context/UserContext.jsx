@@ -18,6 +18,9 @@ export const UserProvider = ({ children }) => {
         <UserContext.Provider value={{ userRole,userName,userId, authToken, courseId,setUserRole,setUserName, setUserId, setAuthToken, setCourseId }}>
             {children}
         </UserContext.Provider>
+        // Context.Provider: This is a component that makes the context data available to its
+        //  descendant components. It accepts a value prop, which is the data you want to share. 
+        // Any components within the <Context.Provider> can access this value.
     );
 };
 
