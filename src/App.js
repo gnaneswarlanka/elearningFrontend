@@ -47,6 +47,7 @@ function App() {
         setIsLoggedIn(false);
         setUser(null);
         navigate('/');
+        window.location.reload(); // Refresh the page
     };
 
     return (
@@ -64,7 +65,7 @@ function App() {
                             <>
                                 <HeroSection />
                                 <FeaturedCoursesSection />
-                                <AboutUsSection />
+                               < AboutUsSection/>
                                 <Footer />
                             </>
                         }
@@ -97,7 +98,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_STUDENT' ? (
                                 <StudentPage user={user} />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -107,7 +108,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
                                 <InstructorPage user={user} />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -118,7 +119,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
                                 <AddCoursePage user={user} />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -128,7 +129,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
                                 <AddAssessmentPage />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -138,7 +139,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
                                 <UpdateCoursePage />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -148,7 +149,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_INSTRUCTOR' ? (
                                 <ProfilePage />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -158,7 +159,7 @@ function App() {
                             isLoggedIn && user?.role === 'ROLE_STUDENT' ? (
                                 <StudentProfile />
                             ) : (
-                                <div>Unauthorized</div>
+                                <Navigate to="/login"/>
                             )
                         }
                     />
@@ -170,6 +171,10 @@ function App() {
                     <Route path="/instructor/view-submissions/:assessmentId" element={<ViewSubmissions />} />
                     <Route path="/evaluate/:submissionId" element={<Evaluate />} />
                     <Route path="/view-score/:submissionId" element={<ViewScore />} />
+                    <Route
+                        path="/about"
+                        element={<AboutUsSection />}
+                    />
                 </Routes>
             </div>
         </UserProvider>

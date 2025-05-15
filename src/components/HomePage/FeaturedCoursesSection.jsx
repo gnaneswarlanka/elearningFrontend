@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import CourseCard from '../CourseCard';
-import { getAllCourses } from '../../services/courseService';
+import { useUserContext } from '../../context/UserContext'; // Import useUserContext
 import { enrollInCourse } from '../../services/enrollmentService';
-import { useUserContext } from '../../context/UserContext';
-
+const API_BASE_URL = 'http://localhost:20003/api/courses';
 function FeaturedCoursesSection() {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
-    const { authToken, userId } = useUserContext();
+    const { userId, authToken } = useUserContext(); // Assuming you have a context to get userId and authToken
 
     useEffect(() => {
         const fetchCourses = async () => {
-            if (!authToken) {
-                console.error('Auth token is missing. Please log in.');
-                setError('You must be logged in to view featured courses.');
-                return;
-            }
 
             try {
-                const allCourses = await getAllCourses(authToken);
-                const coursesWithImages = allCourses.slice(0, 4).map((course, index) => ({
+                const allCourses = await axios.get(`${API_BASE_URL}/`);
+                console.log(allCourses.data);
+                const coursesWithImages = allCourses.data.slice(0, 4).map((course, index) => ({
                     ...course,
                     image: getCourseImage(index), // Assign an image based on the index
                 }));
@@ -39,7 +35,7 @@ function FeaturedCoursesSection() {
             alert('Successfully enrolled in the course!');
         } catch (err) {
             console.error('Error enrolling in course:', err);
-            alert('Failed to enroll in the course. Please try again later.');
+            alert('please login to entroll the course');
         }
     };
 

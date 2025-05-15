@@ -21,7 +21,7 @@ function ViewScore() {
             .catch((error) => {
                 console.error("Error fetching score:", error);
             });
-    }, [submissionId, authToken]);
+    }, [submissionId, authToken,userId]);
 
     if (!score) {
         return <p>Loading score...</p>;

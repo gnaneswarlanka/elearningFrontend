@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getAllCourses } from '../services/courseService';
-import { enrollInCourse } from '../services/enrollmentService'; // Import enrollInCourse
+import { enrollInCourse, getEnrolledCourses } from '../services/enrollmentService'; // Import getEnrolledCourses
 import { useUserContext } from '../context/UserContext'; // Import UserContext
 
 const CoursesPage = () => {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
     const { userId, authToken } = useUserContext(); // Get userId and authToken from context
+    const [enrolledCourses, setEnrolledCourses] = useState(new Set()); // Track enrolled courses
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -19,12 +20,23 @@ const CoursesPage = () => {
             }
         };
 
+        const fetchEnrolledCourses = async () => {
+            try {
+                const enrolled = await getEnrolledCourses(userId, authToken); // Fetch enrolled courses
+                setEnrolledCourses(new Set(enrolled.map((course) => course.courseId))); // Update enrolledCourses
+            } catch (err) {
+                console.error('Error fetching enrolled courses:', err);
+            }
+        };
+
         fetchCourses();
-    }, [authToken]);
+        fetchEnrolledCourses(); // Fetch enrolled courses on component load
+    }, [authToken, userId]);
 
     const handleEnroll = async (courseId) => {
         try {
             await enrollInCourse(userId, courseId, authToken); // Call enrollInCourse from enrollmentService
+            setEnrolledCourses((prev) => new Set(prev).add(courseId)); // Add courseId to enrolledCourses
             alert('Successfully enrolled in the course!');
         } catch (err) {
             console.error('Error enrolling in course:', err);
@@ -45,11 +57,13 @@ const CoursesPage = () => {
                                 <p className="card-text text-muted">{course.description}</p>
                                 <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
                                 <div className="mt-auto">
-                                    <a href={course.contentURL} target="_blank" rel="noopener noreferrer" className="btn btn-primary me-2">
-                                        View Content
-                                    </a>
-                                    <button onClick={() => handleEnroll(course.courseId)} className="btn btn-success">
-                                        Enroll
+                                    {/* Conditionally render button text */}
+                                    <button 
+                                        onClick={() => handleEnroll(course.courseId)} 
+                                        className="btn btn-success" 
+                                        disabled={enrolledCourses.has(course.courseId)}
+                                    >
+                                        {enrolledCourses.has(course.courseId) ? 'Enrolled' : 'Enroll'}
                                     </button>
                                 </div>
                             </div>
