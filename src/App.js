@@ -19,6 +19,7 @@ import ProfilePage from './components/Instructor/ProfilePage';
 import StudentProfile from './components/Student/StudentProfile';
 
 import AssessmentList from './components/Student/AssessmentList'; // Import AssessmentList
+import ViewScore from './components/Student/ViewScore'; // Import ViewScore
 
 import InstructorQuestionnaire from './components/Instructor/InstructorQuestionnaire';
 import ViewAssessments from './components/Instructor/ViewAssessments';
@@ -168,6 +169,7 @@ function App() {
                     <Route path="/instructor/view-assessments" element={<ViewAssessments />} />
                     <Route path="/instructor/view-submissions/:assessmentId" element={<ViewSubmissions />} />
                     <Route path="/evaluate/:submissionId" element={<Evaluate />} />
+                    <Route path="/view-score/:submissionId" element={<ViewScore />} />
                 </Routes>
             </div>
         </UserProvider>
