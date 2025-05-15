@@ -4,7 +4,7 @@ import './AuthPage.css'; // Import the CSS file
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useUserContext } from '../../context/UserContext'; // Corrected import path
  
-const API_BASE_URL = 'http://localhost:8082/api/auth'; // Update this if the backend runs on a different port
+const API_BASE_URL = 'http://localhost:20002/api/auth'; // Update this if the backend runs on a different port
  
 // Reusable Input Component
 const InputField = ({ label, type, name, value, onChange }) => {
@@ -98,6 +98,7 @@ const RegisterForm = ({ onRegister }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log(user)
             const response = await axios.post(`${API_BASE_URL}/register`, user);
             console.log("Success:", response.data);
             if (user.role === "ROLE_INSTRUCTOR") {

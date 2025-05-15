@@ -3,13 +3,13 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useUserContext } from '../../context/UserContext';
 
-const BASE_URL = 'http://localhost:8082/api/instructors';
+const BASE_URL = 'http://localhost:20003/api/instructors';
 
 const Evaluate = () => {
     const { submissionId } = useParams();
     const location = useLocation();
     const { assessmentId } = location.state || {}; // Retrieve assessmentId from state
-    const { authToken } = useUserContext();
+    const { authToken,userId } = useUserContext();
     const [submissionDetails, setSubmissionDetails] = useState(null);
     const [error, setError] = useState(null);
     const [marks, setMarks] = useState('');
@@ -21,7 +21,7 @@ const Evaluate = () => {
             return;
         }
         axios
-            .get(`${BASE_URL}/assessment/${assessmentId}/submission/${submissionId}`, {
+            .get(`${BASE_URL}/${userId}/assessment/${assessmentId}/submission/${submissionId}`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -38,7 +38,7 @@ const Evaluate = () => {
 
     const handleMarksSubmit = () => {
         axios
-            .put(`${BASE_URL}/submission/${submissionId}/grade/${marks}`, null, {
+            .put(`${BASE_URL}/${userId}/submission/${submissionId}/grade/${marks}`, null, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8082/api/students';
+const API_BASE_URL = 'http://localhost:20003/api/students';
 
 export const enrollInCourse = async (userId, courseId, authToken) => {
     const response = await axios.post(

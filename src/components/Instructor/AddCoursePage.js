@@ -19,7 +19,7 @@ const AddCoursePage = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const BASE_URL = 'http://localhost:8082/api/instructors';
+    const BASE_URL = 'http://localhost:20003/api/instructors';
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,7 +40,7 @@ const AddCoursePage = () => {
                 },
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setMessage('Course created successfully!');
                 setFormData({ title: '', description: '', contentURL: '' });
                 setTimeout(() => navigate('/instructor'), 2000); // Redirect to instructor page after success

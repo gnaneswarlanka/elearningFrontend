@@ -24,7 +24,7 @@ const RegisterForm = ({ onRegister }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setError(null); // Reset error state before submission
-        fetch("http://localhost:8082/api/auth/register", {
+        fetch("http://localhost:20002/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

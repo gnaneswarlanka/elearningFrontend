@@ -4,7 +4,7 @@ import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const BASE_URL = 'http://localhost:8082/api/instructors'; // Define the base URL for API requests
+const BASE_URL = 'http://localhost:20003/api/instructors'; // Define the base URL for API requests
 
 const InstructorPage = () => {
     const navigate = useNavigate();

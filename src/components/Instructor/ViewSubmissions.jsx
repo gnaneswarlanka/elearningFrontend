@@ -3,18 +3,18 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useUserContext } from '../../context/UserContext';
 
-const BASE_URL = 'http://localhost:8082/api/instructors';
+const BASE_URL = 'http://localhost:20003/api/instructors';
 
 const ViewSubmissions = () => {
     const { assessmentId } = useParams();
-    const { authToken } = useUserContext();
+    const { userId,authToken } = useUserContext();
     const [submissions, setSubmissions] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         axios
-            .get(`${BASE_URL}/assessment/${assessmentId}`, {
+            .get(`${BASE_URL}/${userId}/assessment/${assessmentId}`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -27,7 +27,7 @@ const ViewSubmissions = () => {
                 console.error('Error fetching submissions:', error);
                 setError('Failed to load submissions. Please try again later.');
             });
-    }, [assessmentId, authToken]);
+    }, [assessmentId, authToken,userId]);
 
     return (
         <div className="view-submissions container mt-5">

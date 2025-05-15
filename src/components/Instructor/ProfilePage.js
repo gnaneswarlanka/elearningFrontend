@@ -8,7 +8,7 @@ const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState('');
 
-    const BASE_URL = 'http://localhost:8082/api/instructors';
+    const BASE_URL = 'http://localhost:20003/api/instructors';
 
     useEffect(() => {
         const fetchProfile = async () => {

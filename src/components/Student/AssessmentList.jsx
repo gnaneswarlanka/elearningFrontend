@@ -5,10 +5,10 @@ import { useUserContext } from "../../context/UserContext";
 function AssessmentList() {
     const [assessments, setAssessments] = useState([]);
     const [selectedAssessment, setSelectedAssessment] = useState(null); // State to track selected assessment
-    const { courseId, authToken } = useUserContext();
+    const { courseId, authToken,userId } = useUserContext();
 
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/students/course/${courseId}`, {
+        axios.get(`http://localhost:20003/api/students/${userId}/course/${courseId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -54,7 +54,7 @@ export function Assessment({ assessment }) {
         const submissionDTO = { answer };
 
         axios.post(
-            `http://localhost:8082/api/students/${userId}/submitAssessments/${assessment.assessmentId}`,
+            `http://localhost:20003/api/students/${userId}/submitAssessments/${assessment.assessmentId}`,
             submissionDTO,
             {
                 headers: {

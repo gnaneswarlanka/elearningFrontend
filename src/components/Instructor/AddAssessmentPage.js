@@ -14,7 +14,7 @@ const AddAssessmentPage = () => {
     });
     const [message, setMessage] = useState('');
 
-    const BASE_URL = 'http://localhost:8082/api/instructors';
+    const BASE_URL = 'http://localhost:20003/api/instructors';
 
     useEffect(() => {
         console.log('User ID:', userId);
@@ -51,7 +51,7 @@ const AddAssessmentPage = () => {
                 }
             );
             console.log('Response:', response);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setMessage('Assessment created successfully!');
                 setFormData({ type: '', maxScore: '' });
                 setTimeout(() => navigate(`/instructor`), 2000);

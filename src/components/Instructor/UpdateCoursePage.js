@@ -14,7 +14,7 @@ const UpdateCoursePage = () => {
     });
     const [message, setMessage] = useState('');
 
-    const BASE_URL = 'http://localhost:8082/api/instructors';
+    const BASE_URL = 'http://localhost:20003/api/instructors';
 
     const handleChange = (e) => {
         const { name, value } = e.target;

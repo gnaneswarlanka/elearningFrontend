@@ -3,10 +3,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8082/api/instructors';
+const BASE_URL = 'http://localhost:20003/api/instructors';
 
 const ViewAssessments = () => {
-    const { courseId, authToken } = useUserContext();
+    const {userId, courseId, authToken } = useUserContext();
     const [assessments, setAssessments] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const ViewAssessments = () => {
         }
 
         axios
-            .get(`${BASE_URL}/course/${courseId}`, {
+            .get(`${BASE_URL}/${userId}/course/${courseId}`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -31,7 +31,7 @@ const ViewAssessments = () => {
                 console.error('Error fetching assessments:', error);
                 setError('Failed to load assessments. Please try again later.');
             });
-    }, [courseId, authToken]);
+    }, [courseId, authToken,userId]);
 
     return (
         <div className="view-assessments container mt-5">
