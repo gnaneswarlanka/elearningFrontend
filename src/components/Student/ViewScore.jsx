@@ -5,11 +5,11 @@ import { useUserContext } from "../../context/UserContext";
 
 function ViewScore() {
     const { submissionId } = useParams(); // Get submissionId from URL
-    const { authToken } = useUserContext();
+    const { authToken,userId } = useUserContext();
     const [score, setScore] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/students/submission/${submissionId}`, {
+        axios.get(`http://localhost:20003/api/students/${userId}/submission/${submissionId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },

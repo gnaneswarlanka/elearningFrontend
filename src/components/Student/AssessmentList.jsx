@@ -7,13 +7,11 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 function AssessmentList() {
     const [assessments, setAssessments] = useState([]);
     const [selectedAssessment, setSelectedAssessment] = useState(null); // State to track selected assessment
-<<<<<<< HEAD
-    const { courseId, authToken,userId } = useUserContext();
-=======
+
     const { courseId, authToken, userId } = useUserContext();
     const [viewSubmissions, setViewSubmissions] = useState(null); // State to track submissions for an assessment
     const navigate = useNavigate(); // Initialize navigate function
->>>>>>> 680261c7a44b940727955bc7bee9935a8b8b7e4b
+
 
     useEffect(() => {
         axios.get(`http://localhost:20003/api/students/${userId}/course/${courseId}`, {
@@ -31,7 +29,7 @@ function AssessmentList() {
     }, [courseId, authToken]);
 
     const handleViewSubmissions = (assessmentId) => {
-        axios.get(`http://localhost:8082/api/students/assessment/${assessmentId}/student/${userId}`, {
+        axios.get(`http://localhost:20003/api/students/${userId}/assessment/${assessmentId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
