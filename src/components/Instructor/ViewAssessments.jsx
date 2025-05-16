@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const BASE_URL = 'http://localhost:20003/api/instructors';
 

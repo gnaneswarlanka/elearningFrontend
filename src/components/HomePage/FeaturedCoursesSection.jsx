@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CourseCard from '../CourseCard';
 import { useUserContext } from '../../context/UserContext'; // Import useUserContext
-import { enrollInCourse } from '../../services/enrollmentService';
+//import { enrollInCourse } from '../../services/enrollmentService';
 const API_BASE_URL = 'http://localhost:20003/api/courses';
 function FeaturedCoursesSection() {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
     const { userId, authToken } = useUserContext(); // Assuming you have a context to get userId and authToken
+    const Navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -27,16 +29,10 @@ function FeaturedCoursesSection() {
         };
 
         fetchCourses();
-    }, [authToken]);
+    }, []);
 
-    const handleEnroll = async (courseId) => {
-        try {
-            await enrollInCourse(userId, courseId, authToken);
-            alert('Successfully enrolled in the course!');
-        } catch (err) {
-            console.error('Error enrolling in course:', err);
-            alert('please login to entroll the course');
-        }
+    const handleEnroll = () => {
+            Navigate("/login")
     };
 
     const getCourseImage = (index) => {
@@ -58,7 +54,7 @@ function FeaturedCoursesSection() {
                     <div key={course.courseId} className="course-card">
                         <CourseCard course={course} image={course.image} />
                         <button
-                            onClick={() => handleEnroll(course.courseId)}
+                            onClick={() => handleEnroll()}
                             className="btn btn-primary mt-2"
                         >
                             Enroll

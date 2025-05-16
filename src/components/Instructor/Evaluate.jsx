@@ -13,6 +13,7 @@ const Evaluate = () => {
     const [submissionDetails, setSubmissionDetails] = useState(null);
     const [error, setError] = useState(null);
     const [marks, setMarks] = useState('');
+    const [isAssigned, setIsAssigned] = useState(false); // New state to track if marks are assigned
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,7 +35,7 @@ const Evaluate = () => {
                 console.error('Error fetching submission details:', error);
                 setError('Failed to load submission details. Please try again later.');
             });
-    }, [assessmentId, submissionId, authToken]);
+    }, [assessmentId, submissionId, authToken, userId]);
 
     const handleMarksSubmit = () => {
         axios
@@ -45,6 +46,7 @@ const Evaluate = () => {
             })
             .then(() => {
                 alert('Marks assigned successfully!');
+                setIsAssigned(true); // Set the state to true after assigning marks
             })
             .catch(error => {
                 console.error('Error assigning marks:', error);
@@ -68,12 +70,14 @@ const Evaluate = () => {
                                 onChange={(e) => setMarks(e.target.value)}
                                 placeholder="Enter marks"
                                 className="form-control d-inline-block w-auto"
+                                disabled={isAssigned} // Disable the input if marks are assigned
                             />
                             <button
                                 onClick={handleMarksSubmit}
                                 className="btn btn-primary ml-2"
+                                disabled={isAssigned} // Disable the button if marks are assigned
                             >
-                                Assign Marks
+                                {isAssigned ? 'Assigned' : 'Assign Marks'} {/* Change button text */}
                             </button>
                         </div>
                 </div>

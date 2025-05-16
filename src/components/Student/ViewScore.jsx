@@ -24,16 +24,21 @@ function ViewScore() {
     }, [submissionId, authToken,userId]);
 
     if (!score) {
-        return <p>Loading score...</p>;
+        return <p className="text-center mt-5">Loading score...</p>;
     }
 
     return (
-        <div>
-            <h2>Score Details</h2>
-            <p>Quesition: {score.question}</p>
-            <p>Answer: {score.answer}</p>
-            <p>Score: {score.currentScore}</p>
-            
+        <div className="container mt-5">
+            <div className="card">
+                <div className="card-header bg-primary text-white">
+                    <h2 className="text-center">Score Details</h2>
+                </div>
+                <div className="card-body">
+                    <p><strong>Question:</strong> {score.question}</p>
+                    <p><strong>Answer:</strong> {score.answer}</p>
+                    <p><strong>Score:</strong> {score.currentScore}</p>
+                </div>
+            </div>
         </div>
     );
 }

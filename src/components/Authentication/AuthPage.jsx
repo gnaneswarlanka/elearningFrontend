@@ -49,7 +49,8 @@ const LoginForm = ({ onLogin }) => {
             setUserRole(response.data.role);
             setUserName(response.data.name);
             setUserId(response.data.userId);
-            setAuthToken(response.data.token); // Ensure authToken is set
+            setAuthToken(response.data.token);
+            // setAuthToken=localStorage(response.data) // Ensure authToken is set
             onLogin(response.data);
         } catch (error) {
             console.error("Error:", error);
