@@ -9,7 +9,7 @@ function ViewScore() {
     const [score, setScore] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:20003/api/students/${userId}/submission/${submissionId}`, {
+        axios.get(`http://localhost:20001/elearning/api/students/${userId}/submission/${submissionId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },

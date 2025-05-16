@@ -14,7 +14,7 @@ function AssessmentList() {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:20003/api/students/${userId}/course/${courseId}`, {
+        axios.get(`http://localhost:20001/elearning/api/students/${userId}/course/${courseId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -29,7 +29,7 @@ function AssessmentList() {
     }, [courseId, authToken]);
 
     const handleViewSubmissions = (assessmentId) => {
-        axios.get(`http://localhost:20003/api/students/${userId}/assessment/${assessmentId}`, {
+        axios.get(`http://localhost:20001/elearning/api/students/${userId}/assessment/${assessmentId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -102,7 +102,7 @@ export function Assessment({ assessment }) {
         const submissionDTO = { answer };
 
         axios.post(
-            `http://localhost:20003/api/students/${userId}/submitAssessments/${assessment.assessmentId}`,
+            `http://localhost:20001/elearning/api/students/${userId}/submitAssessments/${assessment.assessmentId}`,
             submissionDTO,
             {
                 headers: {

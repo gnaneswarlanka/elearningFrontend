@@ -4,10 +4,11 @@ import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const BASE_URL = 'http://localhost:20003/api/instructors'; // Define the base URL for API requests
+const BASE_URL = 'http://localhost:20001/elearning/api/instructors'; // Define the base URL for API requests
 
-const InstructorPage = () => {
+const InstructorPage = ({user}) => {
     const navigate = useNavigate();
+    console.log("this is logged by me ",user)
     const { userName,userId, authToken, setCourseId } = useUserContext(); // Retrieve userId, authToken, and setCourseId from context
     const [showCourses, setShowCourses] = useState(false);
     const [courses, setCourses] = useState([]);

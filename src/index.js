@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')); // Create a r
 root.render(
     <React.StrictMode>
         {/* <UserProvider> Wrap the entire app with UserProvider */}
-            <App />
+         <App/>
         {/* </UserProvider> */}
     </React.StrictMode>
 );

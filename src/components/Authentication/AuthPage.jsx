@@ -4,7 +4,7 @@ import './AuthPage.css'; // Import the CSS file
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useUserContext } from '../../context/UserContext'; // Corrected import path
  
-const API_BASE_URL = 'http://localhost:20002/api/auth'; // Update this if the backend runs on a different port
+const API_BASE_URL = 'http://localhost:20001/authenticationservice/api/auth'; // Update this if the backend runs on a different port
  
 // Reusable Input Component
 const InputField = ({ label, type, name, value, onChange }) => {

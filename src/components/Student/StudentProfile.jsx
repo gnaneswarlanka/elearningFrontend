@@ -8,7 +8,7 @@ const StudentProfile = () => {
     const [error, setError] = useState(null);
     const { userId, authToken } = useUserContext();
 
-    const API_BASE_URL = 'http://localhost:20003/api/students';
+    const API_BASE_URL = 'http://localhost:20001/elearning/api/students';
 
     useEffect(() => {
         const fetchStudentProfile = async () => {

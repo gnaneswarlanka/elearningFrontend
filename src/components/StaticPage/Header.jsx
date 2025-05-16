@@ -14,7 +14,14 @@ function Header({ onLogout, showAuthButtons = true }) {
     };
 
     const getMyCoursesPath = () => {
-        return userRole === 'ROLE_INSTRUCTOR' ? '/instructor' : '/student';
+        if(userRole === 'ROLE_INSTRUCTOR') {
+            return '/instructor'}
+            else if(userRole==='ROLE_STUDENT'){
+                return '/student'
+            }
+            else{
+                return '/login'
+            }
     };
 
     const toggleDropdown = () => {

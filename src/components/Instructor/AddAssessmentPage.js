@@ -14,7 +14,7 @@ const AddAssessmentPage = () => {
     });
     const [message, setMessage] = useState('');
 
-    const BASE_URL = 'http://localhost:20003/api/instructors';
+    const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
     useEffect(() => {
         console.log('User ID:', userId);

@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useUserContext } from '../../context/UserContext';
 
-const BASE_URL = 'http://localhost:20003/api/instructors';
+const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
 const ViewSubmissions = () => {
     const { assessmentId } = useParams();

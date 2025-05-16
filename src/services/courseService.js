@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:20003/api/courses'; // Ensure this matches your backend URL
+const API_BASE_URL = 'http://localhost:20001/elearning/api/courses'; // Ensure this matches your backend URL
 
 export const getAllCourses = async () => {
     try {

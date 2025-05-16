@@ -19,7 +19,7 @@ const AddCoursePage = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const BASE_URL = 'http://localhost:20003/api/instructors';
+    const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
     const handleChange = (e) => {
         const { name, value } = e.target;

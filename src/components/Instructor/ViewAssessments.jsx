@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:20003/api/instructors';
+const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
 const ViewAssessments = () => {
     const {userId, courseId, authToken } = useUserContext();
@@ -38,6 +38,7 @@ const ViewAssessments = () => {
             <h1 className="text-center mb-4">Assessments</h1>
             {error && <p className="text-danger text-center">{error}</p>}
             <div className="list-group">
+
                 {assessments.map((assessment) => (
                     <div key={assessment.assessmentId} className="list-group-item">
                         <h5>

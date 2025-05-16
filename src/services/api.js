@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:20003/api/instructors';
+const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
 export const createCourse = async (userId, courseData, authToken) => {
     return axios.post(`${BASE_URL}/${userId}/courses`, courseData, {
