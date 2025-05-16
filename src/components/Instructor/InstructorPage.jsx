@@ -73,7 +73,6 @@ const InstructorPage = ({user}) => {
         <div className="instructor-page container mt-5">
             <h1 className="welcome-message text-center mb-4">Welcome back {userName}!</h1>
             <div className="d-flex justify-content-center mb-4">
-                <button onClick={() => navigate('/instructor/profile')} className="btn btn-primary me-2">My Profile</button>
                 <button onClick={handleMyCoursesClick} className="btn btn-secondary">My Courses</button>
             </div>
             {showCourses && (

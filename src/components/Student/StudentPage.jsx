@@ -30,7 +30,6 @@ let navigate=useNavigate();
             <h1 className="text-center mb-4">My Enrolled Courses</h1>
             {error && <p className="alert alert-danger">{error}</p>}
             <div className="row">
-
                 {enrolledCourses.map((course) => (
                     <div key={course.id} className="col-md-4 mb-4">
                         <div className="card h-100 shadow-sm">
@@ -38,13 +37,21 @@ let navigate=useNavigate();
                                 <h5 className="card-title text-primary">{course.title}</h5>
                                 <p className="card-text text-muted">{course.description}</p>
                                 <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
-                                <a href={course.contentURL} target="_blank" rel="noopener noreferrer" className="btn btn-primary me-2">
+                                <div className="mt-auto d-flex justify-content-between">
+                                    <a href={course.contentURL} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                                         View Content
                                     </a>
-                                <button onClick={()=>{  setCourseId(course.courseId)
-                                    navigate("/student/course/assessments")}}>assessment</button>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => { 
+                                            setCourseId(course.courseId);
+                                            navigate("/student/course/assessments");
+                                        }}
+                                    >
+                                        Assessment
+                                    </button>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 ))}

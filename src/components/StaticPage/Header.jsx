@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext'; // Import useUserContext
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Import Bootstrap Icons CSS
 
 function Header({ onLogout, showAuthButtons = true }) {
     const { userRole } = useUserContext(); // Get userRole from context
@@ -50,7 +51,12 @@ function Header({ onLogout, showAuthButtons = true }) {
             <nav className="navbar navbar-expand-lg navbar-light">
                 <div className="container-fluid">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+                        
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                                <i className="bi bi-house-door-fill"></i> Home
+                            </Link>
+                        </li>
                         <li className="nav-item"><Link className="nav-link" to="/courses">Courses</Link></li>
                         <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
                         <li className="nav-item"><Link className="nav-link" to={getMyCoursesPath()}>My Courses</Link></li>

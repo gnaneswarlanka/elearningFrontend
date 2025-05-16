@@ -44,19 +44,27 @@ function AssessmentList() {
 
     if (viewSubmissions) {
         return (
-            <div>
-                <h2>Submissions</h2>
-                <ul>
+            <div className="container mt-4">
+                <h2 className="text-center mb-4">Submissions</h2>
+                <ul className="list-group">
                     {viewSubmissions.map((submission, index) => (
-                        <li key={index}>
+                        <li key={index} className="list-group-item">
                             <p>Submission No.: {index + 1}</p>
-                            <button onClick={() => navigate(`/view-score/${submission.submissionId}`)}>
+                            <button 
+                                className="btn btn-primary"
+                                onClick={() => navigate(`/view-score/${submission.submissionId}`)}
+                            >
                                 View
                             </button>
                         </li>
                     ))}
                 </ul>
-                <button onClick={() => setViewSubmissions(null)}>Back to Assessments</button>
+                <button 
+                    className="btn btn-secondary mt-3"
+                    onClick={() => setViewSubmissions(null)}
+                >
+                    Back to Assessments
+                </button>
             </div>
         );
     }
@@ -66,19 +74,31 @@ function AssessmentList() {
     }
 
     return (
-        <div>
-            <h1>Assessment List</h1>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+        <div className="container mt-4">
+            <h1 className="text-center mb-4">Assessment List</h1>
+            <div className="row">
                 {assessments.map((assessment, index) => (
-                    <div key={index} style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", width: "200px" }}>
-                        <h3>Assessment-{index}</h3>
-                        <p>Score: {assessment.maxScore}</p>
-                        <button onClick={() => setSelectedAssessment(assessment)}>
-                            Take Assessment
-                        </button>
-                        <button onClick={() => handleViewSubmissions(assessment.assessmentId)}>
-                            View Submissions
-                        </button>
+                    <div key={index} className="col-md-4 mb-4">
+                        <div className="card h-100 shadow-sm">
+                            <div className="card-body">
+                                <h3 className="card-title">Assessment-{index}</h3>
+                                <p className="card-text">Score: {assessment.maxScore}</p>
+                                <div className="d-flex justify-content-between">
+                                    <button 
+                                        className="btn btn-primary"
+                                        onClick={() => setSelectedAssessment(assessment)}
+                                    >
+                                        Take Assessment
+                                    </button>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => handleViewSubmissions(assessment.assessmentId)}
+                                    >
+                                        View Submissions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -127,22 +147,30 @@ export function Assessment({ assessment }) {
     }
 
     return (
-        <div>
-            <h2>Assessment Details</h2>
-            <p>Question: {assessment.question}</p>
-            <p>Max Score: {assessment.maxScore}</p>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="answer">Answer</label>
-                <textarea
-                    id="answer"
-                    name="answer"
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
-                />
-                <button type="submit">Submit</button>
+        <div className="container mt-4">
+            <h2 className="text-center mb-4">Assessment Details</h2>
+            <p><strong>Question:</strong> {assessment.question}</p>
+            <p><strong>Max Score:</strong> {assessment.maxScore}</p>
+            <form onSubmit={handleSubmit} className="mb-3">
+                <div className="mb-3">
+                    <label htmlFor="answer" className="form-label">Answer</label>
+                    <textarea
+                        id="answer"
+                        name="answer"
+                        className="form-control"
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
             {hasSubmission && (
-                <button onClick={() => setViewScore(true)}>View Scores</button>
+                <button 
+                    className="btn btn-secondary"
+                    onClick={() => setViewScore(true)}
+                >
+                    View Scores
+                </button>
             )}
         </div>
     );

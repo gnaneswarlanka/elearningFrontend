@@ -61,7 +61,7 @@ const AddCoursePage = () => {
                             <h2>Add Course</h2>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={handleSubmit}>
+                            <form >
                                 <div className="mb-3">
                                     <label className="form-label">Title:</label>
                                     <input
@@ -98,7 +98,7 @@ const AddCoursePage = () => {
                                         placeholder="Enter content URL"
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">Add Course</button>
+                                <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>Add Course</button>
                             </form>
                             {message && (
                                 <div className="alert mt-3 text-center" role="alert">
