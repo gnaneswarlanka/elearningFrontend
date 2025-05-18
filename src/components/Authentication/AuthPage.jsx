@@ -23,17 +23,7 @@ const InputField = ({ label, type, name, value, onChange }) => {
     );
 };
 
-// Modal Component
-const Modal = ({ message, onClose }) => {
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <p>{message}</p>
-                <button onClick={onClose} className="modal-close-button">Close</button>
-            </div>
-        </div>
-    );
-};
+
  
 // Login Form Component
 const LoginForm = ({ onLogin }) => {
@@ -45,7 +35,7 @@ const LoginForm = ({ onLogin }) => {
         email: "",
         password: ""
     });
-    const [errorMessage, setErrorMessage] = useState(null); // State for modal message
+    const [setErrorMessage] = useState(null); // State for modal message
 // console.log(user);
     function handleUpdate(e) {
         setUser({
@@ -96,12 +86,6 @@ const LoginForm = ({ onLogin }) => {
                 />
                 <button type="submit" className="form-button">Login</button>
             </form>
-            {errorMessage && (
-                <Modal
-                    message={errorMessage}
-                    onClose={() => setErrorMessage(null)} // Close modal
-                />
-            )}
         </>
     );
 };
@@ -177,12 +161,6 @@ const RegisterForm = ({ onRegister }) => {
                 </div>
                 <button type="submit" className="form-button">Register</button>
             </form>
-            {errorMessage && (
-                <Modal
-                    message={errorMessage}
-                    onClose={() => setErrorMessage(null)} // Close modal
-                />
-            )}
         </>
     );
 };

@@ -51,7 +51,7 @@ const StudentPage = () => {
                                 >
                                     View Course Options
                                 </button>
-
+                                <br/>
                                 {visibleOptions[course.courseId] && (
                                     <div className="mt-auto d-flex justify-content-between">
                                         <a

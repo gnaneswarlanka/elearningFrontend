@@ -4,14 +4,28 @@ import { useUserContext } from '../../context/UserContext'; // Import useUserCon
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'bootstrap-icons/font/bootstrap-icons.css'; // Import Bootstrap Icons CSS
 
+// Modal Component
+const Modal = ({ message, onClose }) => {
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <p>{message}</p>
+                <button onClick={onClose} className="modal-close-button">Close</button>
+            </div>
+        </div>
+    );
+};
+
 function Header({ onLogout, showAuthButtons = true }) {
-    const { userRole } = useUserContext(); // Get userRole from context
+    const { userRole} = useUserContext(); // Get userRole from context
     const [showDropdown, setShowDropdown] = useState(false); // State for dropdown visibility
+    const [showLogoutModal, setShowLogoutModal] = useState(false); // State for logout modal
 
     const handleLogoutClick = () => {
         if (onLogout) {
             onLogout();
         }
+        setShowLogoutModal(true); // Show logout modal
     };
 
     const getMyCoursesPath = () => {
@@ -61,15 +75,40 @@ function Header({ onLogout, showAuthButtons = true }) {
                         <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
                         <li className="nav-item"><Link className="nav-link" to={getMyCoursesPath()}>My Courses</Link></li>
                     </ul>
-                    <div className="d-flex align-items-center">
-                        <button onClick={toggleDropdown} className="btn btn-outline-secondary me-2 menu-button">☰</button>
+                    <div className="d-flex align-items-center position-relative"> {/* Added 'position-relative' */}
+                        <button 
+                            onClick={toggleDropdown} 
+                            className="btn btn-outline-secondary me-2 menu-button"
+                        >
+                            ☰
+                        </button>
                         {showDropdown && (
-                            <div className="dropdown-menu show">
-                                <Link className="dropdown-item" to={userRole === 'ROLE_INSTRUCTOR' ? '/instructor/profile' : '/student/profile'}>
+                            <div 
+                                className="dropdown-menu show shadow rounded position-absolute" 
+                                style={{ 
+                                    minWidth: '200px', 
+                                    backgroundColor: '#f8f9fa', 
+                                    border: '1px solid #ddd', 
+                                    top: '100%', // Position below the button
+                                    left: '0',   // Align to the left of the button
+                                    zIndex: 1050 // Ensure it appears above other elements
+                                }}
+                            >
+                                <Link 
+                                    className="dropdown-item text-dark fw-bold" 
+                                    to={userRole === 'ROLE_INSTRUCTOR' ? '/instructor/profile' : '/student/profile'}
+                                    style={{ padding: '10px 15px' }}
+                                >
                                     My Profile
                                 </Link>
-                                {userRole === 'ROLE_STUDENT' && ( // Show only for students
-                                    <Link className="dropdown-item" to="/progress">My Progress</Link>
+                                {userRole === 'ROLE_STUDENT' && (
+                                    <Link 
+                                        className="dropdown-item text-dark fw-bold" 
+                                        to="/progress"
+                                        style={{ padding: '10px 15px' }}
+                                    >
+                                        My Progress
+                                    </Link>
                                 )}
                             </div>
                         )}
@@ -84,6 +123,12 @@ function Header({ onLogout, showAuthButtons = true }) {
                     </div>
                 </div>
             </nav>
+            {showLogoutModal && (
+                <Modal
+                    message="You have successfully logged out. Visit again! 😊"
+                    onClose={() => setShowLogoutModal(false)} // Close modal
+                />
+            )}
         </header>
     );
 }

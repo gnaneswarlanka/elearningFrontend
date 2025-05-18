@@ -26,6 +26,7 @@ import ViewAssessments from './components/Instructor/ViewAssessments';
 import ViewSubmissions from './components/Instructor/ViewSubmissions';
 import Evaluate from './components/Instructor/Evaluate';
 import SearchCourse from './components/SearchCourse/SearchCourse';
+import MyProgress from './components/Student/MyProgress.jsx';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,7 +56,7 @@ function App() {
         console.log('User logged in:', userData); // Debugging log
         setIsLoggedIn(true);
         setUser(userData);
-        navigate(userData.role === 'ROLE_STUDENT' ? '/student' : '/instructor');
+        navigate(userData.role === 'ROLE_STUDENT' ? '/courses' : '/instructor');
     };
 
     const handleRegister = () => {
@@ -73,7 +74,7 @@ function App() {
 
 
         navigate('/');
-        window.location.reload(); // Refresh the page
+        // window.location.reload(); // Refresh the page
     };
     if (loading) {
         return <div>Loading...</div>; // Show a loading indicator while checking login status
@@ -204,6 +205,16 @@ function App() {
                         element={<AboutUsSection />}
                     />
                     <Route path="/course/:courseId" element={<SearchCourse />} />
+                    <Route
+                        path="/progress"
+                        element={
+                            isLoggedIn && user?.role === 'ROLE_STUDENT' ? (
+                                <MyProgress />
+                            ) : (
+                                <Navigate to="/login" />
+                            )
+                        }
+                    />
                     <Route path="/*" element={<PageNotFound/>} />
                 </Routes>
             </div>

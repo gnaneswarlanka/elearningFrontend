@@ -8,7 +8,7 @@ import { Modal, Button } from 'react-bootstrap'; // Import Bootstrap Modal
 const CoursesPage = () => {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
-    const { userId, authToken, userRole } = useUserContext(); // Get userId, authToken, and role from context
+    const { userId, authToken} = useUserContext(); // Get userId, authToken, and role from context
     const [enrolledCourses, setEnrolledCourses] = useState(new Set()); // Track enrolled courses
     const Navigate = useNavigate();
     const [modalMessage, setModalMessage] = useState(""); // State for modal message
@@ -44,7 +44,7 @@ const CoursesPage = () => {
         if (!userId || !authToken) {
             setModalMessage('You need to log in to enroll in a course.');
             setShowModal(true); // Show modal on error
-            Navigate('/login'); // Redirect to the login page
+           Navigate('/login'); // Redirect to the login page
             return;
         }
         try {

@@ -9,7 +9,7 @@ function AssessmentList() {
     const [assessments, setAssessments] = useState([]);
     const [selectedAssessment, setSelectedAssessment] = useState(null); // State to track selected assessment
 
-    const { courseId, authToken, userId } = useUserContext();
+    const { courseId, authToken, userId, setNumberOfAssessments } = useUserContext();
     const [viewSubmissions, setViewSubmissions] = useState(null); // State to track submissions for an assessment
     const navigate = useNavigate(); // Initialize navigate function
     const [modalMessage, setModalMessage] = useState(""); // State for modal message
@@ -24,12 +24,13 @@ function AssessmentList() {
         })
             .then(response => {
                 setAssessments(response.data);
+                setNumberOfAssessments(response.data.length); 
                 console.log(response.data)
             })
             .catch(error => {
                 console.error("Error fetching assessments:", error);
             });
-    }, [userId,courseId, authToken]);
+    }, [userId,courseId, authToken, setNumberOfAssessments]);
 
     const handleViewSubmissions = (assessmentId) => {
         axios.get(`http://localhost:20001/elearning/api/students/${userId}/assessment/${assessmentId}`, {
@@ -38,7 +39,8 @@ function AssessmentList() {
             },
         })
             .then((response) => {
-                setViewSubmissions(response.data); // Store the submissions
+                setViewSubmissions(response.data);
+                // Store the submissions
             })
             .catch((error) => {
                 console.error("Error fetching submissions:", error);

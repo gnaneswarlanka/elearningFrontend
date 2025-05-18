@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
     const [userId, setUserId] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [courseId, setCourseId] = useState(null); // Add courseId state
+    const [numberOfAssessments, setNumberOfAssessments] = useState(0); // New state for assessments
 
     // Add a debugging log to confirm when courseId is updated
     useEffect(() => {
@@ -26,7 +27,7 @@ export const UserProvider = ({ children }) => {
     }, [courseId]);
 
     return (
-        <UserContext.Provider value={{ userRole,userName,userId, authToken, courseId,setUserRole,setUserName, setUserId, setAuthToken, setCourseId }}>
+        <UserContext.Provider value={{ userRole,userName,userId, authToken, courseId,numberOfAssessments, setNumberOfAssessments,setUserRole,setUserName, setUserId, setAuthToken, setCourseId }}>
             {children}
         </UserContext.Provider>
         // Context.Provider: This is a component that makes the context data available to its

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CourseCard from '../CourseCard';
+import { enrollInCourse } from '../../services/enrollmentService';
+import { useUserContext } from '../../context/UserContext'; // Import useUserContext
+
 //import { useUserContext } from '../../context/UserContext'; // Import useUserContext
 //import { enrollInCourse } from '../../services/enrollmentService';
 const API_BASE_URL = 'http://localhost:20003/api/courses';
@@ -9,6 +12,7 @@ function FeaturedCoursesSection() {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null); 
     const Navigate = useNavigate();
+      const { userId, authToken} = useUserContext(); 
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -30,9 +34,18 @@ function FeaturedCoursesSection() {
         fetchCourses();
     }, []);
 
-    const handleEnroll = () => {
-            Navigate("/login")
-    };
+    const handleEnroll = async (courseId) => {
+        console.log('Enrolling in course:', courseId);
+            if (!userId || !authToken) {
+               Navigate('/login'); // Redirect to the login page
+                return;
+            }
+            try {
+                await enrollInCourse(userId, courseId, authToken); // Call enrollInCourse from enrollmentService
+            } catch (err) {
+                console.error('Error enrolling in course:', err);
+            }
+        };
 
     const getCourseImage = (index) => {
         const images = [
@@ -53,7 +66,7 @@ function FeaturedCoursesSection() {
                     <div key={course.courseId} className="course-card">
                         <CourseCard course={course} image={course.image} />
                         <button
-                            onClick={() => handleEnroll()}
+                            onClick={() => handleEnroll(course.courseId)}
                             className="btn btn-primary mt-2"
                         >
                             Enroll
