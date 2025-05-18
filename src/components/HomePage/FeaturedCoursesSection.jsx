@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CourseCard from '../CourseCard';
-import { useUserContext } from '../../context/UserContext'; // Import useUserContext
+//import { useUserContext } from '../../context/UserContext'; // Import useUserContext
 //import { enrollInCourse } from '../../services/enrollmentService';
 const API_BASE_URL = 'http://localhost:20003/api/courses';
 function FeaturedCoursesSection() {
     const [courses, setCourses] = useState([]);
-    const [error, setError] = useState(null);
-    const { userId, authToken } = useUserContext(); // Assuming you have a context to get userId and authToken
+    const [error, setError] = useState(null); 
     const Navigate = useNavigate();
 
     useEffect(() => {

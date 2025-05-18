@@ -15,6 +15,7 @@ const ViewAssessments = () => {
     useEffect(() => {
         if (!courseId) {
             console.error('Course ID is not defined.');
+            navigate('/instructor');
             return;
         }
 
@@ -32,7 +33,7 @@ const ViewAssessments = () => {
                 console.error('Error fetching assessments:', error);
                 setError('Failed to load assessments. Please try again later.');
             });
-    }, [courseId, authToken,userId]);
+    }, [courseId, authToken, navigate,userId]);
 
     return (
         <div className="view-assessments container mt-5">

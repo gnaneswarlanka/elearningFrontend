@@ -13,6 +13,10 @@ const ViewSubmissions = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if(!userId || !assessmentId) {
+            navigate('/instructor');
+            return;
+        }
         axios
             .get(`${BASE_URL}/${userId}/assessment/${assessmentId}`, {
                 headers: {
@@ -27,7 +31,7 @@ const ViewSubmissions = () => {
                 console.error('Error fetching submissions:', error);
                 setError('Failed to load submissions. Please try again later.');
             });
-    }, [assessmentId, authToken,userId]);
+    }, [assessmentId, authToken,navigate,userId]);
 
     return (
         <div className="view-submissions container mt-5">
@@ -41,7 +45,7 @@ const ViewSubmissions = () => {
                             state={{ assessmentId }} 
                             className="text-decoration-none"
                         >
-                            User ID: {submission.studentId}
+                            Student ID : {submission.studentId}
                         </Link>
                     </li>
                 ))}

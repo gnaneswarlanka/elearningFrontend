@@ -2,29 +2,36 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUserContext } from '../../context/UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UpdateStudentProfile from './UpdateStudentProfile'; // Import the UpdateStudentProfile component
 
 const StudentProfile = () => {
     const [studentProfile, setStudentProfile] = useState(null);
     const [error, setError] = useState(null);
     const { userId, authToken } = useUserContext();
+    const [showUpdateProfile, setShowUpdateProfile] = useState(false); // State to toggle profile update modal
 
     const API_BASE_URL = 'http://localhost:20001/elearning/api/students';
 
-    useEffect(() => {
-        const fetchStudentProfile = async () => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/${userId}`, {
-                    headers: { Authorization: `Bearer ${authToken}` },
-                });
-                setStudentProfile(response.data);
-            } catch (err) {
-                console.error('Error fetching student profile:', err);
-                setError('Failed to fetch student profile. Please try again later.');
-            }
-        };
+    const fetchStudentProfile = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/${userId}`, {
+                headers: { Authorization: `Bearer ${authToken}` },
+            });
+            setStudentProfile(response.data);
+        } catch (err) {
+            console.error('Error fetching student profile:', err);
+            setError('Failed to fetch student profile. Please try again later.');
+        }
+    };
 
+    useEffect(() => {
         fetchStudentProfile();
-    }, [userId, authToken]);
+    });
+
+    const handleProfileUpdate = () => {
+        fetchStudentProfile(); // Refresh profile data after update
+        setShowUpdateProfile(false); // Close the update modal
+    };
 
     if (error) {
         return (
@@ -74,6 +81,14 @@ const StudentProfile = () => {
                                 <h5 className="text-dark">Age</h5>
                                 <p className="text-muted bg-light p-2 rounded">{studentProfile.age}</p>
                             </div>
+                            <div className="text-center mt-4">
+                                <button 
+                                    className="btn btn-info" 
+                                    onClick={() => setShowUpdateProfile(true)}
+                                >
+                                    Update My Profile
+                                </button>
+                            </div>
                         </div>
                         <div className="card-footer text-center bg-primary text-white">
                             <p className="mb-0">Keep learning and growing!</p>
@@ -81,6 +96,12 @@ const StudentProfile = () => {
                     </div>
                 </div>
             </div>
+            {showUpdateProfile && (
+                <UpdateStudentProfile 
+                    onClose={() => setShowUpdateProfile(false)} 
+                    onUpdate={handleProfileUpdate} // Pass the update handler
+                />
+            )}
         </div>
     );
 };

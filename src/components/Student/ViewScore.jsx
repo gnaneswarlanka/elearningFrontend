@@ -36,7 +36,7 @@ function ViewScore() {
                 <div className="card-body">
                     <p><strong>Question:</strong> {score.question}</p>
                     <p><strong>Answer:</strong> {score.answer}</p>
-                    <p><strong>Score:</strong> {score.currentScore}</p>
+                    <p><strong>Score:</strong> {score.currentScore === "0" ? "Result Awaited" : score.currentScore}</p>
                 </div>
             </div>
         </div>

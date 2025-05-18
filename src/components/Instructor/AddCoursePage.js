@@ -3,6 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext'; // Corrected import path
 import axios from 'axios';
 
+// Modal Component
+const Modal = ({ message, onClose }) => {
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <p>{message}</p>
+                <button onClick={onClose} className="modal-close-button">Close</button>
+            </div>
+        </div>
+    );
+};
+
 const AddCoursePage = () => {
     const { userId, authToken } = useUserContext(); // Access setCourseId from context
 
@@ -16,7 +28,8 @@ const AddCoursePage = () => {
         description: '',
         contentURL: '',
     });
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState(''); // State for success message
+    const [errorMessage, setErrorMessage] = useState(null); // State for modal message
     const navigate = useNavigate();
 
     const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
@@ -29,7 +42,7 @@ const AddCoursePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!userId || !authToken) {
-            setMessage('User ID or authentication token is missing. Please log in again.');
+            setErrorMessage('User ID or authentication token is missing. Please log in again.');
             return;
         }
         try {
@@ -41,75 +54,84 @@ const AddCoursePage = () => {
             });
 
             if (response.status === 201) {
-                setMessage('Course created successfully!');
+                setMessage('✅ Course created successfully!'); // Added tick emoji
                 setFormData({ title: '', description: '', contentURL: '' });
                 setTimeout(() => navigate('/instructor'), 2000); // Redirect to instructor page after success
             } else {
-                setMessage('Failed to create course. Please try again.');
+                setErrorMessage('Failed to create course. Please try again.');
             }
         } catch (error) {
-            setMessage('An error occurred. Please try again.');
+            setErrorMessage('An error occurred. Please try again.');
         }
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-lg-6 col-md-8">
-                    <div className="card shadow-lg">
-                        <div className="card-header bg-primary text-white text-center">
-                            <h2>Add Course</h2>
-                        </div>
-                        <div className="card-body">
-                            <form >
-                                <div className="mb-3">
-                                    <label className="form-label">Title:</label>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={formData.title}
-                                        onChange={handleChange}
-                                        required
-                                        className="form-control"
-                                        placeholder="Enter course title"
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Description:</label>
-                                    <textarea
-                                        name="description"
-                                        value={formData.description}
-                                        onChange={handleChange}
-                                        required
-                                        className="form-control"
-                                        placeholder="Enter course description"
-                                        rows="4"
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Content URL:</label>
-                                    <input
-                                        type="url"
-                                        name="contentURL"
-                                        value={formData.contentURL}
-                                        onChange={handleChange}
-                                        required
-                                        className="form-control"
-                                        placeholder="Enter content URL"
-                                    />
-                                </div>
-                                <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>Add Course</button>
-                            </form>
-                            {message && (
-                                <div className="alert mt-3 text-center" role="alert">
-                                    {message}
-                                </div>
-                            )}
+        <>
+            <div className="container mt-5">
+                <div className="row justify-content-center">
+                    <div className="col-lg-6 col-md-8">
+                        <div className="card shadow-lg">
+                            <div className="card-header bg-primary text-white text-center">
+                                <h2>Add Course</h2>
+                            </div>
+                            <div className="card-body">
+                                <form >
+                                    <div className="mb-3">
+                                        <label className="form-label">Title:</label>
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            value={formData.title}
+                                            onChange={handleChange}
+                                            required
+                                            className="form-control"
+                                            placeholder="Enter course title"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Description:</label>
+                                        <textarea
+                                            name="description"
+                                            value={formData.description}
+                                            onChange={handleChange}
+                                            required
+                                            className="form-control"
+                                            placeholder="Enter course description"
+                                            rows="4"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Content URL:</label>
+                                        <input
+                                            type="url"
+                                            name="contentURL"
+                                            value={formData.contentURL}
+                                            onChange={handleChange}
+                                            required
+                                            className="form-control"
+                                            placeholder="Enter content URL"
+                                        />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>Add Course</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {errorMessage && (
+                <Modal
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)} // Close modal
+                />
+            )}
+            {message && (
+                <Modal
+                    message={message}
+                    onClose={() => setMessage('')} // Close success modal
+                />
+            )}
+        </>
     );
 };
 

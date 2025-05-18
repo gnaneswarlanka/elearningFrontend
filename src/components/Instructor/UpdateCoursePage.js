@@ -24,8 +24,8 @@ const UpdateCoursePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!userId || !authToken || !courseId) {
-            setMessage('Instructor ID, course ID, or authentication token is missing. Please log in again.');
-            return;
+             // Redirect to instructor page if courseId is not available
+            return navigate('/instructor');
         }
         try {
             const response = await axios.put(

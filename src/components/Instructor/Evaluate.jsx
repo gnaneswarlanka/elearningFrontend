@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useUserContext } from '../../context/UserContext';
+import { Modal, Button } from 'react-bootstrap'; // Import Bootstrap Modal
 
 const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
@@ -14,11 +15,13 @@ const Evaluate = () => {
     const [error, setError] = useState(null);
     const [marks, setMarks] = useState('');
     const [isAssigned, setIsAssigned] = useState(false); // New state to track if marks are assigned
+    const [modalMessage, setModalMessage] = useState(''); // State for modal message
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!assessmentId) {
-            setError('Assessment ID is missing. Please navigate from the submissions page.');
+        if (!userId ||!assessmentId) {
+            navigate('/instructor');
             return;
         }
         axios
@@ -35,7 +38,7 @@ const Evaluate = () => {
                 console.error('Error fetching submission details:', error);
                 setError('Failed to load submission details. Please try again later.');
             });
-    }, [assessmentId, submissionId, authToken, userId]);
+    }, [assessmentId, submissionId, authToken, userId,navigate]);
 
     const handleMarksSubmit = () => {
         axios
@@ -45,12 +48,14 @@ const Evaluate = () => {
                 },
             })
             .then(() => {
-                alert('Marks assigned successfully!');
+                setModalMessage('Marks assigned successfully!');
+                setShowModal(true); // Show modal on success
                 setIsAssigned(true); // Set the state to true after assigning marks
             })
             .catch(error => {
                 console.error('Error assigning marks:', error);
-                alert('Failed to assign marks. Please try again.');
+                setModalMessage('Failed to assign marks. Please try again.');
+                setShowModal(true); // Show modal on error
             });
     };
 
@@ -65,7 +70,7 @@ const Evaluate = () => {
                         <p><strong>Answer:</strong> {submissionDetails.answer}</p>
                         <div className="mt-3">
                             <input
-                                type="number"
+                                type="text"
                                 value={marks}
                                 onChange={(e) => setMarks(e.target.value)}
                                 placeholder="Enter marks"
@@ -87,6 +92,17 @@ const Evaluate = () => {
             <div className="text-center mt-4">
                 <button onClick={() => navigate(-1)} className="btn btn-secondary">Back</button>
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

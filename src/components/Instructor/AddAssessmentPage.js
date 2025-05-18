@@ -24,7 +24,7 @@ const AddAssessmentPage = () => {
 
     // Handle the case where courseId is undefined
     if (!courseId) {
-        return <p>Error: Course ID is not available. Please navigate from the course page.</p>;
+        return navigate('/instructor'); // Redirect to instructor page if courseId is not available
     }
 
     const handleChange = (e) => {

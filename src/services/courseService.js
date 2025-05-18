@@ -11,3 +11,13 @@ export const getAllCourses = async () => {
         throw error;
     }
 };
+
+export const getCourseById = async (courseId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/course/${courseId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching course by ID:', error);
+        throw error;
+    }
+};

@@ -22,6 +22,18 @@ const InputField = ({ label, type, name, value, onChange }) => {
         </div>
     );
 };
+
+// Modal Component
+const Modal = ({ message, onClose }) => {
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <p>{message}</p>
+                <button onClick={onClose} className="modal-close-button">Close</button>
+            </div>
+        </div>
+    );
+};
  
 // Login Form Component
 const LoginForm = ({ onLogin }) => {
@@ -33,6 +45,7 @@ const LoginForm = ({ onLogin }) => {
         email: "",
         password: ""
     });
+    const [errorMessage, setErrorMessage] = useState(null); // State for modal message
 // console.log(user);
     function handleUpdate(e) {
         setUser({
@@ -46,35 +59,50 @@ const LoginForm = ({ onLogin }) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/login`, user);
             console.log("Success:", response.data);
-            setUserRole(response.data.role);
-            setUserName(response.data.name);
-            setUserId(response.data.userId);
-            setAuthToken(response.data.token);
+
+            localStorage.setItem('userId', response.data.userId);
+            localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userRole', response.data.role);
+            localStorage.setItem('userName', response.data.name);
+
+
+            setUserRole(localStorage.getItem('userRole'));
+            setUserName(localStorage.getItem('userName'));
+            setUserId(localStorage.getItem('userId'));
+            setAuthToken(localStorage.getItem('authToken')); 
             // setAuthToken=localStorage(response.data) // Ensure authToken is set
             onLogin(response.data);
         } catch (error) {
             console.error("Error:", error);
-            alert(error.response?.data?.message || "Login Failed");
+            setErrorMessage(error.response?.data?.message || "Login Failed"); // Set modal message
         }
     };
  
     return (
-        <form className="form-container" onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <InputField
-                label="Email"
-                type="email"
-                name="email"
-                onChange={handleUpdate}
-            />
-            <InputField
-                label="Password"
-                type="password"
-                name="password"
-                onChange={handleUpdate}
-            />
-            <button type="submit" className="form-button">Login</button>
-        </form>
+        <>
+            <form className="form-container" onSubmit={handleSubmit}>
+                <h2>Login</h2>
+                <InputField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    onChange={handleUpdate}
+                />
+                <InputField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    onChange={handleUpdate}
+                />
+                <button type="submit" className="form-button">Login</button>
+            </form>
+            {errorMessage && (
+                <Modal
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)} // Close modal
+                />
+            )}
+        </>
     );
 };
  
@@ -84,9 +112,9 @@ const RegisterForm = ({ onRegister }) => {
         name: "",
         email: "",
         password: "",
-        role: ""
+        role: "ROLE_STUDENT"
     });
- 
+    const [errorMessage, setErrorMessage] = useState(null); // State for modal message
     const navigate = useNavigate();
  
     function handleUpdate(e) {
@@ -109,39 +137,53 @@ const RegisterForm = ({ onRegister }) => {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert(error.response?.data?.message || "Failed to register");
+            setErrorMessage(error.response?.data?.message || "Failed to register"); // Set modal message
         }
     };
  
     return (
-        <form className="form-container" onSubmit={handleSubmit}>
-            <h2>Register</h2>
-            <InputField
-                label="Username"
-                type="text"
-                name="name"
-                onChange={handleUpdate}
-            />
-            <InputField
-                label="Email"
-                type="email"
-                name="email"
-                onChange={handleUpdate}
-            />
-            <InputField
-                label="Password"
-                type="password"
-                name="password"
-                onChange={handleUpdate}
-            />
-            <InputField
-                label="Role"
-                type="text"
-                name="role"
-                onChange={handleUpdate}
-            />
-            <button type="submit" className="form-button">Register</button>
-        </form>
+        <>
+            <form className="form-container" onSubmit={handleSubmit}>
+                <h2>Register</h2>
+                <InputField
+                    label="Username"
+                    type="text"
+                    name="name"
+                    onChange={handleUpdate}
+                />
+                <InputField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    onChange={handleUpdate}
+                />
+                <InputField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    onChange={handleUpdate}
+                />
+                <div className="input-group">
+                    <label htmlFor="role">Role</label>
+                    <select
+                        id="role"
+                        name="role"
+                        value={user.role}
+                        onChange={handleUpdate}
+                    >
+                        <option value="ROLE_STUDENT">Student</option>
+                        <option value="ROLE_INSTRUCTOR">Instructor</option>
+                    </select>
+                </div>
+                <button type="submit" className="form-button">Register</button>
+            </form>
+            {errorMessage && (
+                <Modal
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)} // Close modal
+                />
+            )}
+        </>
     );
 };
  

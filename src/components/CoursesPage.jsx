@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
 import { getAllCourses } from '../services/courseService';
 import { enrollInCourse, getEnrolledCourses } from '../services/enrollmentService'; // Import getEnrolledCourses
 import { useUserContext } from '../context/UserContext'; // Import UserContext
+import { Modal, Button } from 'react-bootstrap'; // Import Bootstrap Modal
 
 const CoursesPage = () => {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
-    const { userId, authToken } = useUserContext(); // Get userId and authToken from context
+    const { userId, authToken, userRole } = useUserContext(); // Get userId, authToken, and role from context
     const [enrolledCourses, setEnrolledCourses] = useState(new Set()); // Track enrolled courses
+    const Navigate = useNavigate();
+    const [modalMessage, setModalMessage] = useState(""); // State for modal message
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const data = await getAllCourses(authToken); // Pass authToken if needed
+                const data = await getAllCourses(); 
                 setCourses(data);
             } catch (err) {
                 console.error('Error fetching courses:', err);
@@ -20,27 +25,37 @@ const CoursesPage = () => {
             }
         };
 
-        const fetchEnrolledCourses = async () => {
-            try {
-                const enrolled = await getEnrolledCourses(userId, authToken); // Fetch enrolled courses
-                setEnrolledCourses(new Set(enrolled.map((course) => course.courseId))); // Update enrolledCourses
-            } catch (err) {
-                console.error('Error fetching enrolled courses:', err);
-            }
-        };
-
         fetchCourses();
-        fetchEnrolledCourses(); // Fetch enrolled courses on component load
-    }, [authToken, userId]);
+    }, []);
+    useEffect(() => {
+        const fetchEnrolledCourses = async () => {
+            if(!userId || !authToken) return; // Check if userId and authToken are available
+                try {
+                    const enrolled = await getEnrolledCourses(userId, authToken); // Fetch enrolled courses
+                    setEnrolledCourses(new Set(enrolled.map((course) => course.courseId))); // Update enrolledCourses
+                } catch (err) {
+                    console.error('Error fetching enrolled courses:', err);
+                }
+            };
+            fetchEnrolledCourses();
+    }, [userId, authToken]); // Fetch enrolled courses when userId or authToken changes
 
     const handleEnroll = async (courseId) => {
+        if (!userId || !authToken) {
+            setModalMessage('You need to log in to enroll in a course.');
+            setShowModal(true); // Show modal on error
+            Navigate('/login'); // Redirect to the login page
+            return;
+        }
         try {
             await enrollInCourse(userId, courseId, authToken); // Call enrollInCourse from enrollmentService
             setEnrolledCourses((prev) => new Set(prev).add(courseId)); // Add courseId to enrolledCourses
-            alert('Successfully enrolled in the course!');
+            setModalMessage('Successfully enrolled in the course!');
+            setShowModal(true); // Show modal on success
         } catch (err) {
             console.error('Error enrolling in course:', err);
-            alert('Failed to enroll in the course. Please try again later.');
+            setModalMessage('Failed to enroll in the course. Please try again later.');
+            setShowModal(true); // Show modal on error
         }
     };
 
@@ -57,20 +72,33 @@ const CoursesPage = () => {
                                 <p className="card-text text-muted">{course.description}</p>
                                 <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
                                 <div className="mt-auto">
-                                    {/* Conditionally render button text */}
-                                    <button 
-                                        onClick={() => handleEnroll(course.courseId)} 
-                                        className="btn btn-success" 
-                                        disabled={enrolledCourses.has(course.courseId)}
-                                    >
-                                        {enrolledCourses.has(course.courseId) ? 'Enrolled' : 'Enroll'}
-                                    </button>
+                                    {/* Show enroll button only if the user is a student */}
+                            
+                                        <button 
+                                            onClick={() => handleEnroll(course.courseId)} 
+                                            className="btn btn-success" 
+                                            disabled={enrolledCourses.has(course.courseId)}
+                                        >
+                                        {(    enrolledCourses.has(course.courseId) ? 'Enrolled' : 'Enroll'
+                                       )}
+                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

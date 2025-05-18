@@ -12,6 +12,17 @@ export const UserProvider = ({ children }) => {
     // Add a debugging log to confirm when courseId is updated
     useEffect(() => {
         console.log('Updated Course ID in context:', courseId); // Debugging log
+        const storedUserId = localStorage.getItem('userId');
+        const storedAuthToken = localStorage.getItem('authToken');
+        const storedUserRole = localStorage.getItem('userRole');
+        const storedUserName = localStorage.getItem('userName');
+
+        if (storedUserId && storedAuthToken) {
+            setUserId(storedUserId);
+            setAuthToken(storedAuthToken);
+            setUserRole(storedUserRole);
+            setUserName(storedUserName);
+        }
     }, [courseId]);
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './components/StaticPage/Header';
@@ -25,11 +25,31 @@ import InstructorQuestionnaire from './components/Instructor/InstructorQuestionn
 import ViewAssessments from './components/Instructor/ViewAssessments';
 import ViewSubmissions from './components/Instructor/ViewSubmissions';
 import Evaluate from './components/Instructor/Evaluate';
+import SearchCourse from './components/SearchCourse/SearchCourse';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('userId');
+        const storedAuthToken = localStorage.getItem('authToken');
+        const storedUserRole = localStorage.getItem('userRole');
+        const storedUserName = localStorage.getItem('userName');
+
+        if (storedUserId && storedAuthToken) {
+            setIsLoggedIn(true);
+            setUser({
+                userId: storedUserId,
+                authToken: storedAuthToken,
+                role: storedUserRole,
+                name: storedUserName,
+            });
+        }
+        setLoading(false);
+    }, []);
 
     const handleLogin = (userData) => {
         console.log('User logged in:', userData); // Debugging log
@@ -46,9 +66,18 @@ function App() {
         console.log('User logged out'); // Debugging log
         setIsLoggedIn(false);
         setUser(null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
+
+
         navigate('/');
         window.location.reload(); // Refresh the page
     };
+    if (loading) {
+        return <div>Loading...</div>; // Show a loading indicator while checking login status
+    }
 
     return (
         <UserProvider>
@@ -58,7 +87,6 @@ function App() {
 
                     
                     <Route path="/student/course/assessments" element={isLoggedIn && user?.role === 'ROLE_STUDENT' ? <AssessmentList/>: <Navigate to="/login"/>} /> 
-                    <Route path="/*" element={<PageNotFound/>} />
                     <Route
                         path="/"
                         element={
@@ -175,6 +203,8 @@ function App() {
                         path="/about"
                         element={<AboutUsSection />}
                     />
+                    <Route path="/course/:courseId" element={<SearchCourse />} />
+                    <Route path="/*" element={<PageNotFound/>} />
                 </Routes>
             </div>
         </UserProvider>

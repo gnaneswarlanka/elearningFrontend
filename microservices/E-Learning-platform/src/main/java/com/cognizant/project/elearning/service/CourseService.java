@@ -116,5 +116,12 @@ public class CourseService {
 		}
 		return result;
 	}
+
+
+	public CourseResponseDTO viewSelectedCourse(int courseId) {
+		Course course=courseRepository.findById(courseId).get();
+		CourseResponseDTO courseResponseDTO=modelMapper.map(course, CourseResponseDTO.class);
+		return courseResponseDTO;
+	}
 	
 }

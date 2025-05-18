@@ -3,6 +3,7 @@ import axios from "axios";
 import { useUserContext } from "../../context/UserContext";
 import ViewScore from "./ViewScore"; // Import the new ViewScore component
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal
 
 function AssessmentList() {
     const [assessments, setAssessments] = useState([]);
@@ -11,6 +12,8 @@ function AssessmentList() {
     const { courseId, authToken, userId } = useUserContext();
     const [viewSubmissions, setViewSubmissions] = useState(null); // State to track submissions for an assessment
     const navigate = useNavigate(); // Initialize navigate function
+    const [modalMessage, setModalMessage] = useState(""); // State for modal message
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
 
     useEffect(() => {
@@ -26,7 +29,7 @@ function AssessmentList() {
             .catch(error => {
                 console.error("Error fetching assessments:", error);
             });
-    }, [courseId, authToken]);
+    }, [userId,courseId, authToken]);
 
     const handleViewSubmissions = (assessmentId) => {
         axios.get(`http://localhost:20001/elearning/api/students/${userId}/assessment/${assessmentId}`, {
@@ -102,6 +105,17 @@ function AssessmentList() {
                     </div>
                 ))}
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
@@ -115,11 +129,16 @@ export function Assessment({ assessment }) {
 //const [isSubmitted, setIsSubmitted] = useState(false); // Track if the assessment is submitted
     const [viewScore, setViewScore] = useState(false); // Track if "View Scores" is clicked
     const [hasSubmission, setHasSubmission] = useState(false); // Track if there is at least one submission
+    const [modalMessage, setModalMessage] = useState(""); // State for modal message
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const submissionDTO = { answer };
+        if(!userId ){
+            return navigator('/student');
+        }
 
         axios.post(
             `http://localhost:20001/elearning/api/students/${userId}/submitAssessments/${assessment.assessmentId}`,
@@ -134,11 +153,13 @@ export function Assessment({ assessment }) {
                 setSubmissionResponse(response.data); // Store the response
  //               setIsSubmitted(true); // Mark as submitted
                 setHasSubmission(true); // Update submission status
-                alert("Submission successful!");
+                setModalMessage("Submission successful!");
+                setShowModal(true); // Show modal on success
             })
             .catch((error) => {
                 console.error("Error submitting assessment:", error);
-                alert("Submission failed. Please try again.");
+                setModalMessage("Submission failed. Please try again.");
+                setShowModal(true); // Show modal on error
             });
     };
 
@@ -172,6 +193,17 @@ export function Assessment({ assessment }) {
                     View Scores
                 </button>
             )}
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notification</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{modalMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
