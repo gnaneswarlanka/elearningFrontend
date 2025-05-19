@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import axios from 'axios';
+import { getCourseById } from '../../services/courseService'; 
 
 const UpdateCoursePage = () => {
     const { userId, authToken, courseId } = useUserContext();
@@ -10,12 +11,24 @@ const UpdateCoursePage = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        contentURL: '', // Added contentURL
+        contentURL: '',
+        imageURL:'' // Added contentURL
     });
+
     const [message, setMessage] = useState('');
 
     const BASE_URL = 'http://localhost:20001/elearning/api/instructors';
 
+    useEffect(() => {
+getCourseById(courseId).then((response) => {
+    setFormData({...formData,
+        title: response.title,
+        description: response.description,
+        contentURL: response.contentURL,
+        imageURL: response.imageURL
+    })
+});
+    }, []);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -84,6 +97,17 @@ const UpdateCoursePage = () => {
                         onChange={handleChange}
                         className="form-control"
                         required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">image URL:</label>
+                    <input
+                        type="url"
+                        name="imageURL"
+                        value={formData.imageURL}
+                        onChange={handleChange}
+                        className="form-control"
+                        
                     />
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Update Course</button>

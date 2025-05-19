@@ -10,4 +10,6 @@ public class CourseResponseDTO {
 		private String contentURL;
 		private int instructorId;
 		private String instructorName;
+		
+		private String imageURL;
 }
