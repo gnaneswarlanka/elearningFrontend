@@ -67,7 +67,12 @@ const LoginForm = ({ onLogin }) => {
             onLogin(response.data);
         } catch (error) {
             console.error("Error:", error);
-            setErrorMessage(error.response?.data?.message || "Login Failed"); // Set modal message
+            if(error.response?.status === 400) {
+
+                alert("Invalid credentials");
+                window.location.reload(); 
+            }
+            // Set modal message
         }
     };
  
@@ -102,21 +107,21 @@ const RegisterForm = ({ onRegister }) => {
         role: ""
     });
     const [errorMessage, setErrorMessage] = useState(null); // State for modal message
-    const [loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
- 
+
     function handleUpdate(e) {
         setUser({
             ...user,
             [e.target.name]: e.target.value
         });
     }
- 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            console.log(user)
+            console.log(user);
             const response = await axios.post(`${API_BASE_URL}/register`, user);
             console.log("Success:", response.data);
             if (user.role === "ROLE_INSTRUCTOR") {
@@ -125,13 +130,20 @@ const RegisterForm = ({ onRegister }) => {
                 onRegister(); // Notify parent of successful registration
             }
         } catch (error) {
-            console.error("Error:", error);
-            setErrorMessage(error.response?.data?.message || "Failed to register"); // Set modal message
+            console.error("Error:", error.response);
+            if (error.response?.status === 400) {
+                alert("User already exists");
+                window.location.reload(); // Reload the page
+                console.log("User already exists");
+            } else {
+                console.error("Error:", error);
+                setErrorMessage(error.response?.data?.message || "Failed to register"); // Set modal message
+            }
         }
     };
- 
+
     return (
-        <>{loading ? (<h1>plase wait</h1>):(
+        <>{loading ? (<h1>plase wait</h1>) : (
             <form className="form-container" onSubmit={handleSubmit}>
                 <h2>Register</h2>
                 <InputField
@@ -160,7 +172,7 @@ const RegisterForm = ({ onRegister }) => {
                         value={user.role}
                         onChange={handleUpdate}
                     >
-                        <option value="" disabled  >Select your role</option>
+                        <option value="" disabled>Select your role</option>
                         <option value="ROLE_STUDENT">Student</option>
                         <option value="ROLE_INSTRUCTOR">Instructor</option>
                     </select>

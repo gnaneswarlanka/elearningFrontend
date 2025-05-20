@@ -3,11 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Footer() {
   return (
-<<<<<<< HEAD
-    <footer>
-      <p>&copy; 2025 E-Learning Platform</p>
-     
-=======
+
     <footer className="bg-dark text-white py-4">
       <div className="container">
         {/* Existing copyright information */}
@@ -42,7 +38,7 @@ function Footer() {
           </a>
         </div>
       </div>
->>>>>>> 622b69c54a24046db426789df9b1a655e8eaf707
+
     </footer>
   );
 }
