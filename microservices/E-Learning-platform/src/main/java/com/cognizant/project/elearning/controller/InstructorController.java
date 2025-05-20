@@ -24,7 +24,6 @@ import com.cognizant.project.elearning.dto.InstructorResponseDTO;
 import com.cognizant.project.elearning.dto.RegisterRequestDTO;
 import com.cognizant.project.elearning.dto.RegisterResponseDTO;
 import com.cognizant.project.elearning.dto.SubmissionResponseDTO;
-import com.cognizant.project.elearning.dto.UpdateCourseDTO;
 import com.cognizant.project.elearning.service.AssessmentService;
 import com.cognizant.project.elearning.service.CourseService;
 import com.cognizant.project.elearning.service.InstructorService;
@@ -75,7 +74,7 @@ public class InstructorController {
    
     @PreAuthorize("#instructorId==authentication.principal.id")
     @PutMapping("{instructorId}/courses/{courseId}")
-    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable int instructorId, @PathVariable int courseId, @Valid @RequestBody UpdateCourseDTO courseRequestDTO) {
+    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable int instructorId, @PathVariable int courseId, @Valid @RequestBody CourseRequestDTO courseRequestDTO) {
         ResponseEntity<CourseResponseDTO> response = new ResponseEntity<>(courseService.updateCourse(instructorId, courseId, courseRequestDTO), HttpStatus.ACCEPTED);
         return response;
     }

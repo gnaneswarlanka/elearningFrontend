@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.elearning.authenticationservice.ElearningClient;
+import com.cognizant.elearning.authenticationservice.UserAlreadyExist;
 import com.cognizant.elearning.authenticationservice.UserDetailsMismatch;
 import com.cognizant.elearning.authenticationservice.dto.LoginRequestDTO;
 import com.cognizant.elearning.authenticationservice.dto.LoginResponseDTO;
@@ -35,20 +36,18 @@ public class AuthenticationService {
 	public RegisterResponseDTO register(RegisterRequestDTO registerRequestDTO) {
 		
 		
-		
+		try {
 		if(registerRequestDTO.getRole().name().equals("ROLE_STUDENT")) {
 			return elearningClient.addStudent(registerRequestDTO).getBody();
 		}
 		else if(registerRequestDTO.getRole().name().equals("ROLE_INSTRUCTOR")) {
 			return elearningClient.addInstructor(registerRequestDTO).getBody();
 		}
-		else
-		{
-		//throw some exception later
-			
-		
-			
 		}
+		catch(Exception e) {
+			throw new UserAlreadyExist();
+		}
+		
 		return null;
 		
 	

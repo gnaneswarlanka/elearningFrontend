@@ -11,7 +11,10 @@ public class GlobalExceptionHandler{
 
 	
 	
-	
+	@ExceptionHandler( UserAlreadyExist.class)
+	public ResponseEntity<String> handleUserAlreadExist(){
+		return new ResponseEntity<>("user exists",HttpStatus.BAD_REQUEST);
+	}
 	
 	
 	@ExceptionHandler( UserDetailsMismatch.class)

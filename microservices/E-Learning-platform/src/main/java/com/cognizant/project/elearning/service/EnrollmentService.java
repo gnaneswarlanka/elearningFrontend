@@ -63,7 +63,6 @@ public class EnrollmentService {
 			courseResponseDTO.setContentURL(enrollment.getCourseId().getContentURL());
 			courseResponseDTO.setInstructorId(enrollment.getCourseId().getInstructorId().getUserId());
 			courseResponseDTO.setInstructorName(enrollment.getCourseId().getInstructorId().getName());
-			courseResponseDTO.setImageURL(enrollment.getCourseId().getImageURL());
 		courseList.add(courseResponseDTO);
 		}
 		

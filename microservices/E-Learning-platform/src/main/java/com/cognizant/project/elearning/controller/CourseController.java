@@ -35,11 +35,11 @@ public class CourseController {
     
     
 //    //for retrieving all the courses of a specific instructor
-    @GetMapping("/course/{courseId}")
-    public ResponseEntity<CourseResponseDTO> viewAllCourse(@PathVariable int courseId) {
-
-        ResponseEntity<CourseResponseDTO> response = new ResponseEntity<>(courseService.viewSelectedCourse(courseId), HttpStatus.OK);
-        return response;
-    }
+//    @GetMapping("/instructor/{instructorId}")
+//    public ResponseEntity<List<CourseRequestDTO>> viewAllCourse(@PathVariable int instructorId) {
+//
+//        ResponseEntity<List<CourseRequestDTO>> response = new ResponseEntity<>(courseService.viewAllCourse(instructorId), HttpStatus.OK);
+//        return response;
+//    }
 
 }
