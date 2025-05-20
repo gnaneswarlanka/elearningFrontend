@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
             setUserRole(storedUserRole);
             setUserName(storedUserName);
         }
-    }, [courseId]);
+    }, []);
 
     return (
         <UserContext.Provider value={{ userRole,userName,userId, authToken, courseId,numberOfAssessments, setNumberOfAssessments,setUserRole,setUserName, setUserId, setAuthToken, setCourseId }}>

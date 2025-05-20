@@ -13,7 +13,7 @@ import Footer from './components/StaticPage/Footer';
 import CoursesPage from './components/CoursesPage';
 import AddCoursePage from './components/Instructor/AddCoursePage';
 import AddAssessmentPage from './components/Instructor/AddAssessmentPage';
-import { UserProvider } from './context/UserContext';
+//import { UserProvider } from './context/UserContext';
 import UpdateCoursePage from './components/Instructor/UpdateCoursePage';
 import ProfilePage from './components/Instructor/ProfilePage';
 import StudentProfile from './components/Student/StudentProfile';
@@ -77,11 +77,12 @@ function App() {
         // window.location.reload(); // Refresh the page
     };
     if (loading) {
+        console.log('Loading...'); 
         return <div>Loading...</div>; // Show a loading indicator while checking login status
     }
 
     return (
-        <UserProvider>
+       
             <div className="app">
                 <Header onLogout={handleLogout} showAuthButtons={!isLoggedIn} />
                 <Routes>
@@ -218,7 +219,7 @@ function App() {
                     <Route path="/*" element={<PageNotFound/>} />
                 </Routes>
             </div>
-        </UserProvider>
+     
     );
 }
 

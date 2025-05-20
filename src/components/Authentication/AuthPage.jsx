@@ -30,7 +30,8 @@ const LoginForm = ({ onLogin }) => {
     const { setUserRole } = useUserContext(); // Access the context
     const { setUserName } = useUserContext(); // Access the context
     const { setUserId } = useUserContext();
-    const { setAuthToken } = useUserContext(); // Access the context
+    const { setAuthToken } = useUserContext(); 
+    const [loading,setLoading]=useState(false);// Access the context
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -45,7 +46,9 @@ const LoginForm = ({ onLogin }) => {
     }
  
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await axios.post(`${API_BASE_URL}/login`, user);
             console.log("Success:", response.data);
@@ -69,7 +72,7 @@ const LoginForm = ({ onLogin }) => {
     };
  
     return (
-        <>
+        <>{loading ? (<h1>plase wait</h1>):(
             <form className="form-container" onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <InputField
@@ -85,7 +88,7 @@ const LoginForm = ({ onLogin }) => {
                     onChange={handleUpdate}
                 />
                 <button type="submit" className="form-button">Login</button>
-            </form>
+            </form>)}
         </>
     );
 };
@@ -96,9 +99,10 @@ const RegisterForm = ({ onRegister }) => {
         name: "",
         email: "",
         password: "",
-        role: "ROLE_STUDENT"
+        role: ""
     });
     const [errorMessage, setErrorMessage] = useState(null); // State for modal message
+    const [loading,setLoading]=useState(false);
     const navigate = useNavigate();
  
     function handleUpdate(e) {
@@ -110,6 +114,7 @@ const RegisterForm = ({ onRegister }) => {
  
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             console.log(user)
             const response = await axios.post(`${API_BASE_URL}/register`, user);
@@ -126,7 +131,7 @@ const RegisterForm = ({ onRegister }) => {
     };
  
     return (
-        <>
+        <>{loading ? (<h1>plase wait</h1>):(
             <form className="form-container" onSubmit={handleSubmit}>
                 <h2>Register</h2>
                 <InputField
@@ -155,12 +160,13 @@ const RegisterForm = ({ onRegister }) => {
                         value={user.role}
                         onChange={handleUpdate}
                     >
+                        <option value="" disabled  >Select your role</option>
                         <option value="ROLE_STUDENT">Student</option>
                         <option value="ROLE_INSTRUCTOR">Instructor</option>
                     </select>
                 </div>
                 <button type="submit" className="form-button">Register</button>
-            </form>
+            </form>)}
         </>
     );
 };

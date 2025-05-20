@@ -7,7 +7,7 @@ import { useUserContext } from '../../context/UserContext'; // Import useUserCon
 
 //import { useUserContext } from '../../context/UserContext'; // Import useUserContext
 //import { enrollInCourse } from '../../services/enrollmentService';
-const API_BASE_URL = 'http://localhost:20003/api/courses';
+const API_BASE_URL = 'http://localhost:20001/elearning/api/courses';
 function FeaturedCoursesSection() {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null); 
@@ -49,7 +49,7 @@ function FeaturedCoursesSection() {
 
     const getCourseImage = (index) => {
         const images = [
-            'https://img.icons8.com/?size=100&id=pIJdjOoL6KfU&format=png&color=000000',
+            
             'https://img.icons8.com/?size=100&id=GPfHz0SM85FX&format=png&color=000000',
             'https://img.icons8.com/?size=100&id=J6KcaRLsTgpZ&format=png&color=000000',
             'https://img.icons8.com/?size=100&id=dRqM1lGcJv6U&format=png&color=000000',
