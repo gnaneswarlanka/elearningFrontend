@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.hover-shadow:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow effect */
+    transform: scale(1.1); /* More noticeable enlargement */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Faster transition */
+    background-color: #e9ecef; /* Slightly darker background on hover */
+}
