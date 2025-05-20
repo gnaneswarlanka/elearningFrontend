@@ -2,7 +2,10 @@
    
     "version": "0.2.0",
     "configurations": [
+<<<<<<< HEAD
         
+=======
+>>>>>>> 622b69c54a24046db426789df9b1a655e8eaf707
         {
             "type": "chrome",
             "request": "launch",

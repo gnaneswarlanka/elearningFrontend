@@ -30,6 +30,9 @@ public class SubmissionService {
 	@Autowired
 	StudentRepository studentRepository;
 	
+	@Autowired
+	AssessmentService assessmentService;
+	
 	public SubmissionResponseDTO submitAssessment(int studentId,int assessmentId, SubmissionRequestDTO submissionDTO) {
 		Student student=studentRepository.findById(studentId).orElseThrow(()->new StudentDetailNotFound("Student with Id "+studentId+" not found."));
 		Assessment assessment=assessmentRepository.findById(assessmentId).orElseThrow(()->new AssessmentNotFound());
@@ -48,6 +51,8 @@ public class SubmissionService {
 		submissionResponseDTO.setSubmissionId(submission.getSubmissionId());
 		submissionResponseDTO.setTitle(assessment.getCourseId().getTitle());
 		submissionResponseDTO.setStudentId(studentId);
+//		assessmentService.xyz(assessment.getCourseId().getCourseId(),studentId);
+		
 		return submissionResponseDTO;
 	}
 

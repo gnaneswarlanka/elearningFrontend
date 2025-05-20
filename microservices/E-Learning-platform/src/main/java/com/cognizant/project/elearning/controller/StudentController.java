@@ -117,5 +117,11 @@ public class StudentController {
     	return new ResponseEntity<>(submissionService.viewStudentSubmissions(assessmentId,studentId),HttpStatus.OK);
     
     }
+    
+    @PreAuthorize("#studentId==authentication.principal.id")
+    @GetMapping("/{studentId}/course/{courseId}/progess")
+    public ResponseEntity<Integer> viewProgess(@PathVariable int studentId,@PathVariable int courseId){
+    	return new ResponseEntity<>(assessmentService.viewProgess(studentId,courseId),HttpStatus.OK);
+    }
    
 }

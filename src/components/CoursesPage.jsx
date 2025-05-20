@@ -66,9 +66,17 @@ const CoursesPage = () => {
             <div className="row">
                 {courses.map((course) => (
                     <div key={course.courseId} className="col-md-4 mb-4">
-                        <div className="card h-100 shadow-sm">
+                        <div className="card h-100 shadow-sm border-0 bg-light hover-shadow"> {/* Ensure hover-shadow is applied */}
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title text-primary">{course.title}</h5>
+                                {course.imageURL && (
+                                            <img 
+                                                src={course.imageURL} 
+                                                alt={course.title} 
+                                                className="card-img-top mb-3" 
+                                                style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
+                                            />
+                                        )}
                                 <p className="card-text text-muted">{course.description}</p>
                                 <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
                                 <div className="mt-auto">

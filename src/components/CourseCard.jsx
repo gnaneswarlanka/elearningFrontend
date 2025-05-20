@@ -4,7 +4,7 @@ const CourseCard = ({ course, image }) => {
     return (
         <div className="card text-center shadow-sm">
             <img
-                src={image}
+                src={course.imageURL || image}
                 alt={course.title}
                 className="card-img-top rounded-circle mx-auto mt-3"
                 style={{ width: '100px', height: '100px', objectFit: 'cover' }}

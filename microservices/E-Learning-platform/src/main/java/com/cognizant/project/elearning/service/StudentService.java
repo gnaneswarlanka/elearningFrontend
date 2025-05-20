@@ -21,6 +21,8 @@ public class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+    
+    
     BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
     public StudentResponseDTO viewStudent(int studentId) {
         Student student = studentRepository.findById(studentId)
@@ -44,6 +46,7 @@ public class StudentService {
 		
 		return modelMapper.map(student, RegisterResponseDTO.class);
 	}
+
 
 	
 }

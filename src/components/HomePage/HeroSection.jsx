@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css';
 import { getAllCourses } from '../../services/courseService';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function HeroSection() {
     const [courses, setCourses] = useState([]);
     const [searchTitle, setSearchTitle] = useState('');
     const [filteredCourses, setFilteredCourses] = useState([]);
-    const navigate = useNavigate(); // Initialize navigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
                 const allCourses = await getAllCourses();
                 setCourses(allCourses);
-                setFilteredCourses(allCourses); // Initially show all courses
+                setFilteredCourses(allCourses);
             } catch (error) {
                 console.error('Error fetching courses:', error);
             }
@@ -24,24 +24,24 @@ function HeroSection() {
     }, []);
 
     const handleSearch = (e) => {
-        const title = e.target.value;
+        const title = e.target.value.toLowerCase();
         setSearchTitle(title);
-        const filtered = courses.filter(course =>
-            course.title.toLowerCase().includes(title.toLowerCase())
-        );
-        setFilteredCourses(filtered);
+        setFilteredCourses(courses.filter(course =>
+            course.title.toLowerCase().includes(title)
+        ));
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && filteredCourses.length > 0) {
-            navigateToCourse(filteredCourses[0].id); // Navigate to the first filtered course
+            console.log('Navigating to course:', filteredCourses[0].courseId);
+            navigateToCourse(filteredCourses[0].courseId);
         }
     };
 
-    const navigateToCourse = (courseId) => {
+   const navigateToCourse = (courseId) => {
         setSearchTitle('');
         setFilteredCourses([]);
-        navigate(`/course/${courseId}`); // Navigate to the course page
+        navigate(`/course/${courseId}`);
     };
 
     return (
@@ -65,7 +65,7 @@ function HeroSection() {
                 placeholder="Search courses by title..."
                 value={searchTitle}
                 onChange={handleSearch}
-                onKeyPress={handleKeyPress} // Handle Enter key press
+                onKeyPress={handleKeyPress}
                 style={{ maxWidth: '400px', margin: '0 auto', borderRadius: '8px' }}
             />
             {searchTitle && filteredCourses.length > 0 && (
@@ -74,8 +74,8 @@ function HeroSection() {
                     style={{
                         maxWidth: '400px',
                         margin: '0 auto',
-                        position: 'relative', // Changed from 'absolute' to 'relative'
-                        top: '-15px', // Adjusted to align directly below the input box
+                        position: 'relative',
+                        top: '-15px',
                         zIndex: 1000,
                         backgroundColor: '#fff',
                         borderRadius: '8px',
@@ -87,7 +87,7 @@ function HeroSection() {
                             key={course.courseId}
                             className="list-group-item"
                             style={{ cursor: 'pointer' }}
-                            onClick={() => navigateToCourse(course.courseId)} // Navigate on click
+                            onClick={() => navigateToCourse(course.courseId)}
                         >
                             {course.title}
                         </li>

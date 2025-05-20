@@ -57,30 +57,42 @@ const StudentProfile = () => {
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-8">
                     <div className="card shadow-lg border-0">
-                        <div className="card-header bg-primary text-white text-center py-4">
-                            <h2 className="mb-0">My Profile</h2>
+                        <div className="card-header bg-primary text-white text-center py-3">
+                            <h3 className="mb-0">My Profile</h3>
                         </div>
                         <div className="card-body p-4">
-                            <div className="mb-3">
-                                <h5 className="text-dark">Name</h5>
-                                <p className="text-muted bg-light p-2 rounded">{studentProfile.name}</p>
+                            <div className="text-center mb-4">
+                                <div 
+                                    className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto" 
+                                    style={{ width: '120px', height: '120px', fontSize: '40px' }}
+                                >
+                                    <i className="bi bi-person-circle"></i>
+                                </div>
                             </div>
-                            <div className="mb-3">
-                                <h5 className="text-dark">Email</h5>
-                                <p className="text-muted bg-light p-2 rounded">{studentProfile.email}</p>
-                            </div>
-                            <div className="mb-3">
-                                <h5 className="text-dark">Role</h5>
-                                <p className="text-muted bg-light p-2 rounded">{studentProfile.role}</p>
-                            </div>
-                            <div className="mb-3">
-                                <h5 className="text-dark">College</h5>
-                                <p className="text-muted bg-light p-2 rounded">{studentProfile.college}</p>
-                            </div>
-                            <div className="mb-3">
-                                <h5 className="text-dark">Age</h5>
-                                <p className="text-muted bg-light p-2 rounded">{studentProfile.age}</p>
-                            </div>
+                            <table className="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th className="text-dark text-end" style={{ width: '40%' }}>Name:</th>
+                                        <td className="text-muted bg-light p-2 rounded">{studentProfile.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-dark text-end">Email:</th>
+                                        <td className="text-muted bg-light p-2 rounded">{studentProfile.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-dark text-end">Role:</th>
+                                        <td className="text-muted bg-light p-2 rounded">{studentProfile.role}</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-dark text-end">College:</th>
+                                        <td className="text-muted bg-light p-2 rounded">{studentProfile.college}</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-dark text-end">Age:</th>
+                                        <td className="text-muted bg-light p-2 rounded">{studentProfile.age}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div className="text-center mt-4">
                                 <button 
                                     className="btn btn-info" 
@@ -90,8 +102,8 @@ const StudentProfile = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="card-footer text-center bg-primary text-white">
-                            <p className="mb-0">Keep learning and growing!</p>
+                        <div className="card-footer text-center bg-primary text-white py-2">
+                            <small>Keep learning and growing!</small>
                         </div>
                     </div>
                 </div>
@@ -99,7 +111,7 @@ const StudentProfile = () => {
             {showUpdateProfile && (
                 <UpdateStudentProfile 
                     onClose={() => setShowUpdateProfile(false)} 
-                    onUpdate={handleProfileUpdate} // Pass the update handler
+                    onUpdate={handleProfileUpdate}
                 />
             )}
         </div>

@@ -184,6 +184,9 @@ const AuthPage = ({ showLogin, showRegister, onLoginSuccess, onRegisterSuccess }
  
     return (
         <div className="auth-page">
+            <div className="gif-container">
+                <img src="https://www.akratech.in/wp-content/uploads/2023/11/online-clasroom-scaled.webp" alt="Loading Animation" />
+            </div>
             {showLogin && (
                 <div className="forms-container">
                     <LoginForm onLogin={handleLoginSubmit} />
