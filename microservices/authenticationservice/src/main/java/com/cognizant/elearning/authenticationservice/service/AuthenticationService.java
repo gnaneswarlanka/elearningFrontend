@@ -53,11 +53,12 @@ public class AuthenticationService {
 	
 	}
 	public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+		try {
 		LoginResponseDTO loginResponseDTO=null;
 RegisterResponseDTO reg=elearningClient.getUserDetail(loginRequestDTO).getBody();
 loginResponseDTO=modelMapper.map(reg, LoginResponseDTO.class);
 User user=modelMapper.map(reg, User.class);
-try {
+
 
 				authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(),loginRequestDTO.getPassword()));

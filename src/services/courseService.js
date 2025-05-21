@@ -18,6 +18,5 @@ export const getCourseById = async (courseId) => {
         return response.data;
     } catch (error) {
         console.error('Error fetching course by ID:', error);
-        throw error;
     }
 };
