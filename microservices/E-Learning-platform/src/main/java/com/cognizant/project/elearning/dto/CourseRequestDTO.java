@@ -13,5 +13,4 @@ public class CourseRequestDTO  {
 	@NotBlank
 	private String contentURL;
 
-
 }

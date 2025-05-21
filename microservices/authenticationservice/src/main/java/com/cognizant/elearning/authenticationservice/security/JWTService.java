@@ -24,17 +24,6 @@ public class JWTService {
 
     private String secretkey = "aGVsbG93b3JsZGhlbGxvd29ybGRoZWxsb3dvcmxkZWxsb3dvcmxkZWxsb3dvcmxk";
 
-//    public JWTService() {
-//
-//        try {
-//            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-//            SecretKey sk = keyGen.generateKey();
-//            secretkey = Base64.getEncoder().encodeToString(sk.getEncoded());
-////            System.out.println("Secret key:"+ secretkey);
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();

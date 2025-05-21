@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Footer() {
   return (
+
     <footer className="bg-dark text-white py-4">
       <div className="container">
         {/* Existing copyright information */}
@@ -37,6 +38,7 @@ function Footer() {
           </a>
         </div>
       </div>
+
     </footer>
   );
 }

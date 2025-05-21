@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.cognizant.project.elearning.dto.CourseRequestDTO;
 import com.cognizant.project.elearning.dto.CourseResponseDTO;
 import com.cognizant.project.elearning.dto.EnrollmentResponseDTO;
-import com.cognizant.project.elearning.dto.UpdateCourseDTO;
 import com.cognizant.project.elearning.entity.Course;
 import com.cognizant.project.elearning.entity.Instructor;
 import com.cognizant.project.elearning.entity.Notification;
@@ -56,7 +55,7 @@ public class CourseService {
 	}
 	
 	
-	public CourseResponseDTO updateCourse(int instructorId,int courseId,UpdateCourseDTO courseRequestDTO){
+	public CourseResponseDTO updateCourse(int instructorId,int courseId,CourseRequestDTO courseRequestDTO){
 		Course course=courseRepository.findByCourseIdAndInstructorIdUserId(courseId,instructorId);
 		if(course==null) {
 			throw new InvalidCourse("Course with Id "+courseId+" not found.");
@@ -66,13 +65,25 @@ public class CourseService {
 		course.setContentURL(courseRequestDTO.getContentURL());
 		course.setTitle(courseRequestDTO.getTitle());
 		course.setDescription(courseRequestDTO.getDescription());
-		course.setImageURL(courseRequestDTO.getImageURL());
 		course=courseRepository.save(course);
 		CourseResponseDTO courseResponseDTO=modelMapper.map(course, CourseResponseDTO.class);
 		courseResponseDTO.setInstructorId(course.getInstructorId().getUserId());
 
 		
 		courseResponseDTO.setInstructorName(course.getInstructorId().getName());
+		Notification notification=new Notification();
+		notification.setDescription("Instructor "+courseResponseDTO.getInstructorName()+" added course "+courseResponseDTO.getTitle());
+		notification.setDateTime(LocalDateTime.now());
+		notification.setCourseId(course);
+		notification.setInstructorId(instructor);
+		List<Student> students=new ArrayList<>();
+		List<EnrollmentResponseDTO> el=	enrollmentService.enrolledStudents(courseId);
+		for(EnrollmentResponseDTO obj:el) {
+			Student student=studentRepository.findById(obj.getStudentId()).orElseThrow(()->new StudentDetailNotFound("Student with Id "+obj.getStudentId()+" not found."));
+			students.add(student);
+		}
+		notification.setStudentId(students);
+		notificationRepository.save(notification);
 		return courseResponseDTO;
 	}
 
@@ -104,13 +115,6 @@ public class CourseService {
 			result.add(modelMapper.map(obj, CourseResponseDTO.class));
 		}
 		return result;
-	}
-
-
-	public CourseResponseDTO viewSelectedCourse(int courseId) {
-		Course course=courseRepository.findById(courseId).get();
-		CourseResponseDTO courseResponseDTO=modelMapper.map(course, CourseResponseDTO.class);
-		return courseResponseDTO;
 	}
 	
 }

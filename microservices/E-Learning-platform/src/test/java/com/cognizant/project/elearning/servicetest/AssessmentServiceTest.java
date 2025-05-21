@@ -50,7 +50,7 @@ public class AssessmentServiceTest {
     @BeforeEach
     public void setUp() {
         assessmentRequestDTO = new AssessmentRequestDTO();
-        assessmentRequestDTO.setType("Quiz");
+        assessmentRequestDTO.setQuestion("what are u");
         assessmentRequestDTO.setMaxScore(100);
         course = new Course();
         course.setCourseId(1);
@@ -64,12 +64,12 @@ public class AssessmentServiceTest {
 
         assessment = new Assessment();
         assessment.setAssessmentId(1);
-        assessment.setType("Quiz");
+        assessment.setQuestion("Quiz");
         assessment.setMaxScore(100);
         assessment.setCourseId(course);
 
         assessmentResponseDTO = new AssessmentResponseDTO();
-        assessmentResponseDTO.setType("Quiz");
+        assessmentResponseDTO.setQuestion("Quiz");
         assessmentResponseDTO.setMaxScore(100);
         assessmentResponseDTO.setCourseId(1);
         assessmentResponseDTO.setTitle("Java Programming");

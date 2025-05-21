@@ -40,6 +40,4 @@ public class Course {
 	@OneToMany(mappedBy="courseId",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<Notification> notification;
 	
-	private String imageURL;
-	
 }

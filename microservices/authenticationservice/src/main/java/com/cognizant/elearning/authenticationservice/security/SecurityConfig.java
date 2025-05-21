@@ -28,8 +28,8 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+//  @Autowired
+//private JwtFilter jwtFilter;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -38,13 +38,13 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(customizer -> customizer.disable()).
-        		cors().and().
+      cors().and().
                 authorizeHttpRequests(request -> request
                         .requestMatchers("api/auth/**").permitAll()
                         .anyRequest().authenticated())
                .httpBasic(Customizer.withDefaults()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+               // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
 

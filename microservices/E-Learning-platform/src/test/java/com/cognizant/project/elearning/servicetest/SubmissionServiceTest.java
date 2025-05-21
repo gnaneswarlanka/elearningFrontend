@@ -57,7 +57,7 @@ public class SubmissionServiceTest {
 
         assessment = new Assessment();
         assessment.setAssessmentId(1);
-        assessment.setType("Quiz");
+        assessment.setQuestion("Quiz");
 
         submission = new Submission();
         submission.setSubmissionId(1);
@@ -68,11 +68,11 @@ public class SubmissionServiceTest {
         submissionResponseDTO.setSubmissionId(1);
         submissionResponseDTO.setAssessmentId(1);
         submissionResponseDTO.setStudentId(1);
-        submissionResponseDTO.setType("Quiz");
+        submissionResponseDTO.setQuestion("Quiz");
         submissionResponseDTO.setMaxScore(100);
-        submissionResponseDTO.setCourseId(1);
+        
         submissionResponseDTO.setTitle("Java Programming");
-        submissionResponseDTO.setInstructorName("John Doe");
+        
     }
 
 //    @Test
