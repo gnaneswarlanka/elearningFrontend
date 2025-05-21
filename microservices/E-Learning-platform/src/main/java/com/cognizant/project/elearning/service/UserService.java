@@ -17,7 +17,7 @@ UserRepository userRepo;
 	ModelMapper modelMapper;
 	public RegisterResponseDTO getUserDetail(LoginRequestDTO loginRequestDTO) {
 		// TODO Auto-generated method stub
-		User user=userRepo.findByEmail(loginRequestDTO.getEmail()).get();
+		User user=userRepo.findByEmail(loginRequestDTO.getEmail()).get();// modify this
 		RegisterResponseDTO registerResponseDTO=modelMapper.map(user,RegisterResponseDTO.class);
 		return registerResponseDTO;
 	}

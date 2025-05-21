@@ -7,7 +7,7 @@ import { useUserContext } from '../../context/UserContext'; // Corrected import 
 const API_BASE_URL = 'http://localhost:20001/authenticationservice/api/auth'; // Update this if the backend runs on a different port
  
 // Reusable Input Component
-const InputField = ({ label, type, name, value, onChange }) => {
+const InputField = ({ label, type, name, value, onChange,required }) => {
     return (
         <div className="input-group">
             <label htmlFor={name}>{label}</label>
@@ -16,6 +16,7 @@ const InputField = ({ label, type, name, value, onChange }) => {
                 id={name}
                 name={name}
                 value={value}
+                required={required}
                 onChange={onChange}
                 placeholder={`Enter your ${label.toLowerCase()}`}
             />
@@ -76,12 +77,14 @@ const LoginForm = ({ onLogin }) => {
                     label="Email"
                     type="email"
                     name="email"
+                    required
                     onChange={handleUpdate}
                 />
                 <InputField
                     label="Password"
                     type="password"
                     name="password"
+                    required
                     onChange={handleUpdate}
                 />
                 <button type="submit" className="form-button">Login</button>
@@ -133,18 +136,21 @@ const RegisterForm = ({ onRegister }) => {
                     label="Username"
                     type="text"
                     name="name"
+                    required
                     onChange={handleUpdate}
                 />
                 <InputField
                     label="Email"
                     type="email"
                     name="email"
+                    required
                     onChange={handleUpdate}
                 />
                 <InputField
                     label="Password"
                     type="password"
                     name="password"
+                    required
                     onChange={handleUpdate}
                 />
                 <div className="input-group">
